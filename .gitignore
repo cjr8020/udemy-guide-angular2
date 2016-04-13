@@ -1,11 +1,37 @@
-# Build and Release Folders
-bin/
-bin-debug/
-bin-release/
+node_modules
+dist
+.tmp
+.sass-cache
+bower_components
+test/bower_components
 
-# Other files and folders
+
+####### common ignores below #######
+
+# Eclipse/RAD
 .settings/
+.metadata/
+classes/
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# JetBrains IntellijIDEA/WebStorm
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Numerous always-ignore extensions
+*.diff
+*.bak
+*.tmp
+*.moved
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.zip
+*.vi
+*~
