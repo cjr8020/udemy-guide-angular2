@@ -1,20 +1,201 @@
-# Angular 2 Beta Boilerplate
+# Angular 2 
 
-## Description
-This repository acts as a very simple Angular 2 Beta Boilerplate with which you can get started developing Angular 2 immediately.
-It is derived from the official Angular 2 Documentation which can be found [here](https://angular.io/docs/ts/latest/quickstart.html).
-## Usage
-Follow the following steps and you're good to go! Important: Typescript and npm has to be installed on your machine!
+## angular-cli
 
-1: Clone repo
+### Migrating to webpack-based cli
+
+Global package:
+
 ```
-git clone https://github.com/mschwarzmueller/angular-2-beta-boilerplate.git
+  $ sudo npm uninstall -g angular-cli
+  $ npm cache clean
+  $ npm install -g angular-cli@webpack
+
+  $ ng -v
+
+  Could not start watchman; falling back to NodeWatcher for file system events.
+  Visit http://ember-cli.com/user-guide/#watchman for more info.
+  angular-cli: 1.0.0-beta.11-webpack.8
+  node: 6.4.0
+  os: linux x64
+
 ```
-2: Install packages
+
+### first-app
+
+tried with the latest angular-cli@webpack.
+all broken with typescript and other dependencies.
+even updated to the latest node version.. still no luck.
+
+went back to angular-cli@latest:
+
 ```
-npm install
+npm uninstall -g angular-cli
+npm cache clean
+npm install -g angular-cli@latest
 ```
-3: Start server (includes auto refreshing) and gulp watcher
+
+that is still at ```angular-cli: 1.0.0-beta.10```
+
+created new app
+
+```$ ng new first-app```
+
+Still at angular RC4:
+
 ```
-npm start
+{
+  "name": "first-app",
+  "version": "0.0.0",
+  "license": "MIT",
+  "angular-cli": {},
+  "scripts": {
+    "start": "ng serve",
+    "postinstall": "typings install",
+    "lint": "tslint \"src/**/*.ts\"",
+    "test": "ng test",
+    "pree2e": "webdriver-manager update",
+    "e2e": "protractor"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.4",
+    "@angular/compiler": "2.0.0-rc.4",
+    "@angular/core": "2.0.0-rc.4",
+    "@angular/forms": "0.2.0",
+    "@angular/http": "2.0.0-rc.4",
+    "@angular/platform-browser": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/router": "3.0.0-beta.2",
+    "es6-shim": "0.35.1",
+    "reflect-metadata": "0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "systemjs": "0.19.26",
+    "zone.js": "0.6.12"
+  },
+  "devDependencies": {
+    "angular-cli": "1.0.0-beta.10",
+    "codelyzer": "0.0.20",
+    "ember-cli-inject-live-reload": "1.4.0",
+    "jasmine-core": "2.4.1",
+    "jasmine-spec-reporter": "2.5.0",
+    "karma": "0.13.22",
+    "karma-chrome-launcher": "0.2.3",
+    "karma-jasmine": "0.3.8",
+    "protractor": "3.3.0",
+    "ts-node": "0.5.5",
+    "tslint": "3.11.0",
+    "typescript": "1.8.10",
+    "typings": "1.3.1"
+  }
+}
 ```
+
+Testing works:
+
+```
+$ ng serve
+$ ng e2e
+```
+
+### Migrate to RC5 and introduce ngModule
+
+create new component ```other```
+
+```
+$ ng g c other
+installing component                                                                      
+  create src/app/other/other.component.css                                                
+  create src/app/other/other.component.html                                               
+  create src/app/other/other.component.spec.ts                                            
+  create src/app/other/other.component.ts                                                 
+  create src/app/other/index.ts   
+```
+
+#### modify package.json for RC5
+
+```
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.5",
+    "@angular/compiler": "2.0.0-rc.5",
+    "@angular/core": "2.0.0-rc.5",
+    "@angular/http": "2.0.0-rc.5",
+    "@angular/platform-browser": "2.0.0-rc.5",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.5",
+    "@angular/router": "3.0.0-rc.1",
+    "@angular/forms": "0.3.0"
+```
+
+Verified that ```ng test``` and ```ng e2e``` did not break.
+
+
+#### introduce a module
+
+as of RC5, ngModule is still optional.
+
+To create a module, create a new file ```app.module.ts```:
+
+Create a new class ```AppModule``` that has an empty body, but is decorated
+with NgModule decorator.
+Prior to RC5, boostrapping of the main component occured in ```main.ts``` file.
+With RC5, boostrapping moves to app.module.ts:
+
+```
+import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { AppComponent } from "./app.component";
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule],
+  bootstrap: [AppComponent] 
+
+})
+export class AppModule {}
+```
+
+Now, in ```main.ts```.. Here is the old version:
+
+```
+import { bootstrap } from '@angular/platform-browser-dynamic';
+import { enableProdMode } from '@angular/core';
+import { AppComponent, environment } from './app/';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+bootstrap(AppComponent);
+```
+..instead of boostrapping, we replace it with ```platformBrowserDynamic```.
+we don't need to import the AppComponent anymore
+
+```
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode } from '@angular/core';
+import { environment } from './app';
+import { AppModule } from './app/app.module';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule);
+```
+
+And the app still works!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

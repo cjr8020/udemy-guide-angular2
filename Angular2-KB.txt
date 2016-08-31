@@ -9,59 +9,70 @@
 
 ======================================================================
 
-	Angular2 Scaffolds
-	******************
+  ngModule
+
+  
+
+======================================================================
 
 
-generator-ng2-webpack
----------------------
+  angular-cli project folder structure (non-webpack)
+  ************************************
 
-https://github.com/cmelion/generator-ng2-webpack
+project-name
+      |
+    - config/
+        config folder for testing
+    - dist/
+      build artifacts
+      auto generated
+    - e2e/
+    - public/
+        any artifacts you want copied to dist/ folder
+     - src/
+        - app/
+          - environment.ts
+              allows to switch to 'prod' for instance which changes some behaviors like login for instance...
 
+          - app.component.css
+          - app.component.html
+          - app.component.spec.ts
+          - app.component.ts
+              
+          - index.ts
+              groups all the exports from the app folder together
+        - index.html
+            this is where you are loading your application component
+            and of course you need to bootstrap it by importing main.ts
+            which bootstraps your component.
 
-Quick start
+        - main.ts
+            important for bootstrapping your application
 
-	# change directory to your app
-	$ cd my-app
+        - system-config.ts
+            configures SystemJS.
+        - tsconfig.json
+            configures TypeScript compilation
 
-	# start the server
-	$ npm start
-	go to http://localhost:8080 in your browser.
+        - typings.d.ts
+            sets up typings in your TypeScript code.
+    - tmp/
+    - typings/
+        holds typings that get imported
 
+    - angular-cli.json
+        configures your project under angular-cli
+    - angular-cli-build.js
+        configures files to be copied to the vendor folder
+        vendor folder holds only dependencies required in production
 
+    - package.json
 
-src
-├── app/                            * top level web app component folder
-│   ├── components/                 * subcomponents
-│   │   ├── about/                  * example page level component folder
-│   │   │   ├── index.async.ts      * .async indicates that the component will be asychronously loaded
-│   │   │   ├── spec.ts             * unit test
-│   │   │   ├── style.scss          * css styles, could be css, less or sass
-│   │   │   └── template.html       * component's html template
-│   │   └── home/                   * example main page level component
-│   │       ├── e2e.js              * end-to-end test for home
-│   │       ├── index.ts            * a simple synchronous component
-│   │       ├── spec.ts             * 
-│   │       ├── style.scss          * 
-│   │       └── template.html       * 
-│   ├── e2e.js                      * end-to-end test for the app component
-│   ├── index.ts                    * the app component
-│   ├── root.spec.ts                * the main entry point for hierarchically nested tests.
-│   ├── services/                   * app level service folder
-│   │   └── api/                    * example application level service folder
-│   │       ├── index.ts            * example service
-│   │       └── spec.ts             * unit test associated with example service
-│   ├── style.scss                  * application component specific styles
-│   └── template.html               * application component html template
-├── bootstrap.ts                    * application entry point (bootstrap)
-├── public/                         * static public facing resources
-│   ├── img/                        * global/top level icons and images
-│   └── index.html                  * the html index page where it all starts
-├── shims/                          * shims an polyfills for non-compliant browsers
-│   └── shims_for_IE.js             * sample shim
-├── style/                          * 
-│   └── app.scss                    * styles required by the index page
-└── vendor.ts                       * this is where we import shims/polyfills and  
-									* core third party libraries
+    - tslint.json
+        by default uses codelyzer to implement angular2 styleguide.
+    - typings.json
+        specifies which typings should be installed in the typings folder
 
-------------------------------------------------------------------
+        
+=====================================================================
+
