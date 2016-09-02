@@ -1,0 +1,313 @@
+
+  @@@@@@@@@@@@@@@@
+
+    Angular-CLI
+
+  @@@@@@@@@@@@@@@@
+
+
+Usage
+-----
+
+  $ ng new <project-name>
+
+To create project in a directory named differently
+
+  $ ng new <project-name> -dir <dir-name>
+
+To create all component with a particular prefix
+
+  $ ng new <project-name> --prefix <prefix-name>
+
+Components have selectors, and prefixes would help with the selectors.
+
+
+Create angular2 project in existing directory
+---------------------------------------------
+
+  $ mkdir <project-name>
+  $ ng init --name <project-name> --prefix <prefix-name>
+
+
+=====================================================================
+
+  create and wire new component
+  ----------------------------
+
+Create new component 'books'
+
+  $ ng g c books
+
+This will create a new folder 'app/books' with the following content:
+
+  index.ts
+  books.component.ts
+  books.component.html
+  books.component.css
+  books.component.spec.ts
+
+app.module.ts
+-------------
+Add bootstrapping for the new module:
+
+import { BooksComponent } from './books/books.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    BooksComponent
+  ],
+
+app.component.ts
+----------------
+
+import { BooksComponent } from './books';
+
+@Component({
+  ...
+  directives: [BooksComponent]
+
+app.component.html
+------------------
+To include the content of 'books.component.html' we need to look up the selector
+tag in 'book.component.ts' - it is 'app-books'
+
+so we can include this in 'app.component.html':
+
+<app-books></app-books>
+
+Destroy Component
+=================
+
+  $ ng destroy component books
+
+this will remove the 5 files that were auto-gen'ed by angular-cli, however
+modifications to the following files:
+  app.module.ts
+  app.component.ts
+  app.component.html
+  and the folder 'books' 
+will have to be manually removed
+
+
+
+
+
+
+
+=====================================================================
+
+  angular-cli project folder structure (non-webpack)
+  ************************************
+
+project-name
+      |
+    - config/
+        config folder for testing
+    - dist/
+      build artifacts
+      auto generated
+    - e2e/
+    - public/
+        any artifacts you want copied to dist/ folder
+     - src/
+        - app/
+          - environment.ts
+              allows to switch to 'prod' for instance which changes some behaviors like login for instance...
+
+          - app.component.css
+          - app.component.html
+          - app.component.spec.ts
+          - app.component.ts
+
+          - index.ts
+              groups all the exports from the app folder together
+        - index.html
+            this is where you are loading your application component
+            and of course you need to bootstrap it by importing main.ts
+            which bootstraps your component.
+
+        - main.ts
+            important for bootstrapping your application
+
+        - system-config.ts
+            configures SystemJS.
+        - tsconfig.json
+            configures TypeScript compilation
+
+        - typings.d.ts
+            sets up typings in your TypeScript code.
+    - tmp/
+    - typings/
+        holds typings that get imported
+
+    - angular-cli.json
+        configures your project under angular-cli
+    - angular-cli-build.js
+        configures files to be copied to the vendor folder
+        vendor folder holds only dependencies required in production
+
+    - package.json
+
+    - tslint.json
+        by default uses codelyzer to implement angular2 styleguide.
+    - typings.json
+        specifies which typings should be installed in the typings folder
+
+
+
+=====================================================================
+
+$ npm install -g angular-cli
+
+  as of august 2016, installs 1.0.0-beta.10
+
+angular-cli@webpack
+https://github.com/angular/angular-cli/blob/master/WEBPACK_UPDATE.md
+
+Global package:
+
+  $ sudo npm uninstall -g angular-cli
+  $ sudo npm cache clean
+  $ sudo npm install -g angular-cli@webpack
+
+  $ ng -v
+
+  craiskin@xubi-one:~ $ ng -v
+  Could not start watchman; falling back to NodeWatcher for file system events.
+  Visit http://ember-cli.com/user-guide/#watchman for more info.
+  angular-cli: 1.0.0-beta.11-webpack.8
+  node: 6.4.0
+  os: linux x64
+
+
+Local project package:
+
+  # commit any changes you have to git first
+  rm -rf node_modules dist tmp typings
+  npm install --save-dev angular-cli@webpack
+
+Project files
+
+  you will need to run 'ng init' to check for changes in all the auto-gen'ed files created by 'ng new'.
+
+
+
+
+==============================================================
+
+  Tutorial
+  --------
+https://www.sitepoint.com/angular-2-tutorial/
+
+$ ng new angular2-todo-app
+
+├── angular-cli-build.js
+├── angular-cli.json
+├── config
+│   ├── environment.dev.ts
+│   ├── environment.js
+│   ├── environment.prod.ts
+│   ├── karma.conf.js
+│   ├── karma-test-shim.js
+│   └── protractor.conf.js
+├── e2e
+│   ├── app.e2e-spec.ts
+│   ├── app.po.ts
+│   ├── tsconfig.json
+│   └── typings.d.ts
+├── package.json
+├── public
+├── README.md
+├── src
+│   ├── app
+│   │   ├── app.component.css
+│   │   ├── app.component.html
+│   │   ├── app.component.spec.ts
+│   │   ├── app.component.ts
+│   │   ├── environment.ts
+│   │   ├── index.ts
+│   │   └── shared
+│   │       └── index.ts
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── main.ts
+│   ├── system-config.ts
+│   ├── tsconfig.json
+│   └── typings.d.ts
+├── tslint.json
+├── typings
+│   └── ...
+└── typings.json
+
+
+
+
+
+==============================================================
+
+  ng
+
+ng help <command-name default: all> <options>
+
+  --verbose (boolean) default: false
+  -v
+
+ng init <glob-pattern> <options>
+
+    creates a new angular-cli project in the current folder
+
+    --dry-run
+    -d
+    --verbose
+    -v
+    --blueprint
+    -b
+
+ng new <app-name> <options>
+  creates a new directory and runs 'ng init' in it
+  --dry-run
+  -d
+  --verbose
+  -v
+  --blueprint (default: app)
+  -b <value>
+  --skip-npm (default: false)
+  -sn
+  --skip-bower (default: false)
+  -sb
+  --skip-git (default: false )
+  -sg
+  --directory (string)
+  -dir <value>
+
+ng serve
+  builds and serves your app, rebuilding on file changes
+  ng s
+  --port (default: 4200)
+  -p <value>
+  --host (default: all interfaces)
+  -H <value>
+  --proxy
+  -pr <value>
+  --insecure-proxy (default: false)
+
+ng test <options>
+
+
+retrying
+--------
+
+  $ npm cache clean
+  $ ng new <xxx>
+
+
+
+==============================================================
+
+-------
+Install
+
+$ sudo npm install -g angular-cli
+
+==============================================================

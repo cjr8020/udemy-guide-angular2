@@ -9,7 +9,73 @@
 
 ======================================================================
 
-  ngModule
+  Angular Modules 
+  ***************
+
+Angular Modules help organize an application into cohesive blocks of 
+functionality.
+
+Modules are a great way to organize the application and extend it with capabilities
+from external libraries.  Many libraries are modules (e.g. FormsModule, HttpModule,
+RouterModule).  Many 3rd party libs are available as Angular modules (e.g. Material
+Design, Ionic, AngularFire2).
+
+Modules consolidate components, directives and pipes into cohesive blocks of 
+functionality, each focused on a feature area, application business domain, etc..
+
+Modules can be loaded eagerly when the app starts, or lazy loaded asynch by the 
+router.
+
+Every Angular app has at least once module class - the root module.
+We bootstrap that module to launch the application.
+
+The root module is all we need in a simple application with a few components.
+As the app grows, we refactor the root module into feature modules, and we
+import these modules into root module.
+
+An Angular Module is a class adorned with the @NgModule decorator function.
+
+root module
+-----------
+
+By convention, root module is a class called 'AppModule' in a file named
+app.module.ts
+
+  import { NgModule }      from '@angular/core';
+  import { BrowserModule } from '@angular/platform-browser';
+
+  import
+        { AppComponent }  from './app.component';
+
+  @NgModule({
+    imports: [ BrowserModule ],
+    declarations: [ AppComponent ],
+    bootstrap:    [ AppComponent ]
+  })
+  export class AppModule { }
+
+NgModule
+  this decorator defines the metadata for the module.
+  this metadata imports a single helper module - BrowserModule - which 
+  every browser app must import.
+
+BrowserModule
+  registers critical app service providers and 
+  includes common directives like NgIf and NgFor
+
+declarations
+  this list identifies the application's only component, the root component
+  "AppComponent"
+
+bootstrap
+  this property identies this AppComponent as the bootstrap component.
+  When Angular launches the app, it places the HTML rendering of AppComponent
+  in the DOM, inside the <my-app> element tags of the index.html.  
+
+app/app.component.ts
+----------------------
+
+
 
   
 

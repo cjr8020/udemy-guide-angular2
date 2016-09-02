@@ -1,17 +1,30 @@
-#### this app ####
+# compiled output
+/dist
+/tmp
 
-# contains JS source compiled from typescipt
-app
-# contains compiled css
-src
+# dependencies
+/node_modules
+/bower_components
 
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
 
-node_modules
-dist
-.tmp
-.sass-cache
-bower_components
-test/bower_components
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
 
 
 ####### common ignores below #######
@@ -26,8 +39,9 @@ classes/
 *.iml
 *.iws
 
-# Mac
+# System Files
 .DS_Store
+Thumbs.db
 
 # Numerous always-ignore extensions
 *.diff
