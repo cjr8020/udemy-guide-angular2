@@ -5,6 +5,14 @@
 
   @@@@@@@@@@@@@@@@
 
+NOTE: angular-cli@1.0.0-beta.11-webpack.8 does NOT work with typescript@2.0.2
+so for now when you run 
+  $ ng new blah
+change "typescript": "^2.0.0" to "typescript": "2.0.0" in packages.json
+then
+  $ rm -rf node_modules dist tmp typings
+  $ npm install --save-dev angular-cli@webpack  
+
 
 Usage
 -----
@@ -61,11 +69,20 @@ import { BooksComponent } from './books/books.component';
 app.component.ts
 ----------------
 
-import { BooksComponent } from './books';
+NOTE: here do NO LONGER need to import and declare BooksComponent as directives - this is because
+when BooksComponent is declared above in app.module.ts (done by angular-cli)
+it is automatically available to all components.
+Just go straight to app.component.html and use it: <app-books></app-books>
 
-@Component({
-  ...
-  directives: [BooksComponent]
+
+  import { BooksComponent } from './books'; // NO NEED
+
+  @Component({
+    ...
+    directives: [BooksComponent] // NO NEED
+
+
+
 
 app.component.html
 ------------------

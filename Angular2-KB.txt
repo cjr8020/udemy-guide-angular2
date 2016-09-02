@@ -7,6 +7,57 @@
 
 
 
+root module bootstrap
+---------------------
+change from RC4 to RC5+, instead of having bootstrap in main.ts, now the root component is bootstraped in
+
+app.module.ts
+
+1. import the root component:
+
+  import { AppComponent } from './app.component';
+
+2. declare in declarations:
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+
+3. and announce that this component should be bootstraped:
+
+  bootstrap: [AppComponent]
+
+in main.ts
+----------
+
+we now import 
+
+  import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+and execute .bootstrapModule(AppModule) method on it.  
+
+adding other components
+------------------------
+
+Now instead of adding other components as directives on the root component as directives
+add other components to app.module.ts:
+
+  import { OtherComponent } from './other/other.component';
+
+  @NgModule({
+    declarations: [
+      AppComponent,
+      OtherComponent
+    ],
+
+angular-cli will do this when you run '$ ng g c other'
+
+Advantage: when you declare other modules in app.module.ts, they are all available to 
+other components.
+
+
+
 ======================================================================
 
   Angular Modules 
