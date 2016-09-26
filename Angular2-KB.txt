@@ -60,6 +60,50 @@ other components.
 
 ======================================================================
 
+  components
+  ----------
+
+Components are the main way we build and specify elements and logic on the page.
+
+In angular 1, this was done with directives/controllers/scope.  In angular2, 
+all those concepts are combined into components.
+
+Here is a simple component:
+
+import { Component } from '@angular/core';
+
+  @Component({
+    selector: 'my-component',
+    // templateUrl: './my.component.html',
+    // styleUrls: ['./my.component.css']
+    template: '<div>Hello my name is {{name}}. <button (click)="sayMyName()">Say my name</button></div>'
+  })
+  export class MyComponent {
+    console.log('My name is', this.name);
+  }
+
+selector
+--------
+
+  selectors work like a CSS selector.  so if we were to have 
+
+    <my-component>
+
+  element in our HTML document, angular would know what to load here.. 
+
+  You can also use "hashtag" syntax:
+
+    selector: '#app-root'
+
+  Now, you can reference that selector via div id:
+
+    <div id="app-root"> 
+
+
+
+
+======================================================================
+
   Angular Modules 
   ***************
 
@@ -132,64 +176,24 @@ app/app.component.ts
 
 ======================================================================
 
+  View Encapsulation
+  ------------------
 
-  angular-cli project folder structure (non-webpack)
-  ************************************
+angular 2 emulates the concept of shadow DOM:
 
-project-name
-      |
-    - config/
-        config folder for testing
-    - dist/
-      build artifacts
-      auto generated
-    - e2e/
-    - public/
-        any artifacts you want copied to dist/ folder
-     - src/
-        - app/
-          - environment.ts
-              allows to switch to 'prod' for instance which changes some behaviors like login for instance...
+  an HTML element has its 'shadow' DOM
 
-          - app.component.css
-          - app.component.html
-          - app.component.spec.ts
-          - app.component.ts
-              
-          - index.ts
-              groups all the exports from the app folder together
-        - index.html
-            this is where you are loading your application component
-            and of course you need to bootstrap it by importing main.ts
-            which bootstraps your component.
+<div>
+  <component _nghost-pax-1>
+    <h1 _ngcontent-pax-1>... </h1>
+  </component>
+  <h1>won't be styled the same</h1>
+</div>
 
-        - main.ts
-            important for bootstrapping your application
+  This is based on CSS Attribute Selectors.
 
-        - system-config.ts
-            configures SystemJS.
-        - tsconfig.json
-            configures TypeScript compilation
+  a[target] {
+    background-color: yellow;
+  }
 
-        - typings.d.ts
-            sets up typings in your TypeScript code.
-    - tmp/
-    - typings/
-        holds typings that get imported
-
-    - angular-cli.json
-        configures your project under angular-cli
-    - angular-cli-build.js
-        configures files to be copied to the vendor folder
-        vendor folder holds only dependencies required in production
-
-    - package.json
-
-    - tslint.json
-        by default uses codelyzer to implement angular2 styleguide.
-    - typings.json
-        specifies which typings should be installed in the typings folder
-
-        
-=====================================================================
-
+======================================================================

@@ -5,6 +5,21 @@
 
   @@@@@@@@@@@@@@@@
 
+Updating angular-cli
+--------------------
+
+$ sudo npm uninstal -g angular-cli
+$ sudo npm cache clean -f
+$ sudo npm install -g angular-cli@latest
+
+Local project package:
+
+  $ rm -rf node_modules dist tmp
+  $ npm install --save-dev angular-cli@latest
+  $ ng init
+
+==============================================================================  
+
 NOTE: angular-cli@1.0.0-beta.11-webpack.8 does NOT work with typescript@2.0.2
 so for now when you run 
   $ ng new blah
@@ -13,6 +28,7 @@ then
   $ rm -rf node_modules dist tmp typings
   $ npm install --save-dev angular-cli@webpack  
 
+==============================================================================  
 
 Usage
 -----
@@ -114,6 +130,36 @@ will have to be manually removed
 
 =====================================================================
 
+  angular-cli project folder structure (webpack)
+  ************************************
+
+project-name
+      |
+      src/
+        |
+        app/
+        assets/
+        environments/
+        index.html
+        main.ts (bootstrap)
+        polyfills.ts
+        styles.css (global styles)
+        test.ts (runner)
+        tsconfig.json
+        typings.d.ts
+      |
+      e2e/
+      dist/
+
+      angular-cli.json (project structure)
+      karma.conf.js (unit tests config)
+      protractor.conf.js (e2e tests config)
+      package.json (project dependencies)
+
+      tslint.json (linting rules)
+
+
+
   angular-cli project folder structure (non-webpack)
   ************************************
 
@@ -174,6 +220,18 @@ project-name
 
 
 =====================================================================
+
+09.21.2016
+
+  $ sudo npm install -g angular-cli@latest
+  $ ng -v
+
+  angular-cli: 1.0.0-beta.15
+  node: 6.6.0
+  os: linux x64
+
+
+
 
 $ npm install -g angular-cli
 
@@ -259,8 +317,6 @@ $ ng new angular2-todo-app
 
 
 
-
-
 ==============================================================
 
   ng
@@ -322,9 +378,64 @@ retrying
 
 ==============================================================
 
--------
-Install
+  Installing 3rd party libraries
+  ******************************
 
-$ sudo npm install -g angular-cli
+Q: how to add or bundle external js files?
+http://stackoverflow.com/questions/38855891/angular-cli-webpack-how-to-add-or-bundle-external-js-files
+
+A:
+https://github.com/angular/angular-cli#3rd-party-library-installation
+https://coryrylan.com/blog/angular-2-cli-adding-third-party-libraries
+
+First, install your library with npm:
+
+  $ npm install d3 --save
+
+Next, install the TypeScript definitions to allow our code to have better
+autocompletion and dev experience. Note: if you use a library that was written
+in TS such as RxJS, you don't have to worry about installing the type 
+definitions).
+
+  $ npm install @types/d3 --save-dev
+
+  [ look at the difference between '--save-dev' and '--save' options ]
+
+Now that the library is installed, import it into any file in your app:
+
+  import * as _ from 'lodash';
+
+
+Global installation
+-------------------
+
+Some js libraries need to be added to the global scope and loaded as if they
+were a script tag.  This is done via angular-cli.json
+
+bootstrap4 example:
+
+  $ npm install bootstrap@next
+
+Then add the needed script files to apps[0].scripts:
+
+  "scripts": [
+    "../node_modules/jquery/dist/jquery.js",
+    "../node_modules/tether/dist/js/tether.js",
+    "../node_modules/bootstrap/dist/js/bootstrap.js"
+  ],    
+
+Finally, add the Bootstrap CSS to the apps[0].styles array:
+
+  "styles": [
+    "styles.css",
+    "../node_modules/bootstrap/dist/css/bootstrap.css"
+  ],
+
+Restart 'ng serve' if you're running it, and bootstrap 4 should be working.
+
+
+
+
+
 
 ==============================================================
