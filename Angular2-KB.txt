@@ -196,4 +196,137 @@ angular 2 emulates the concept of shadow DOM:
     background-color: yellow;
   }
 
-======================================================================
+========================================================================
+
+	Architecture
+	*************
+
+https://angular.io/docs/ts/latest/guide/architecture.html
+  
+
+Angular applications are composed of:
+	1. HTML templates with angularized markup,
+	2. component classes to manage those templates
+	3. services with application logic
+	4. modules combing components and services
+
+You launch the app by bootstrapping the root module
+
+
+8 main building blocks of an Angular app:
+
+1. Modules
+2. Components
+3. Templates
+4. Metadata
+5. Data binding
+6. Directives
+7. Services
+8. DI
+
+
+1. Modules
+-----------
+	
+	NOTE: JavaScript also has modules which are different from Angular modules.
+
+	http://exploringjs.com/es6/ch_modules.html
+
+	Prior to ES6, JS modules were implemented via libraries, not built into language.
+	ES6 introduces JavaScript built-in modules.
+
+	Angular ships as a collection of JS modules. think of them as library modules.
+	Each Angular library name begins with the '@angular' prefix.
+	YOu install them with npm, and import parts of them with JavaScript
+	'import' statement:
+		import { Component } from '@angular/core';
+
+
+every app has at least one module - root - named "AppModule"
+other modules are "feature" modules
+each module is a cohesive block of code dedicated to an app domain, a workflow, 
+or a closely related set of capabilities.
+
+any module, root or feature, is a class with @NgModule decorator
+
+	NgModule is a decorator function that takes a single metadata object whose
+	properties describe a module.
+
+		- declarations
+			= view classes that belong to this module. 3 types of view classes:
+				1. components
+				2. directives
+				3. pipes
+		- exports
+			= subset of the declarations that should be visible and usable 
+			in the component templates of OTHER modules
+		- imports
+			= other modules whose exported classes are needed by component
+			templates declared in this module
+		- providers
+			= creators of services that this module contributes 
+			to the global collection of services
+			they become accessible in all parts of the app
+		- bootstrap [ROOT only]
+			= the main application view, called 'root component'
+			only ROOT module should set this "bootstrap" property
+
+example of root module
+
+	import { NgModule }      from '@angular/core';
+	import { BrowserModule } from '@angular/platform-browser';
+
+	@NgModule({
+	  imports:      [ BrowserModule ],
+	  providers:    [ Logger ],
+	  declarations: [ AppComponent ],
+	  exports:      [ AppComponent ], // just for demo - no one needs root module
+	  bootstrap:    [ AppComponent ]
+	})
+	export class AppModule { }
+
+bootstrap root in main.ts
+
+app/main.ts:
+
+	import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+	import { AppModule } from './app.module';
+
+	platformBrowserDynamic().bootstrapModule(AppModule);
+
+Angular modules and JavaScript modules
+
+	be aware that you're using the two systems side by side:
+
+		import { Component } from '@angular/core';
+		.
+		.
+		.
+		@NgModule({
+			imports:	[ BrowserModule ],
+			...
+		})
+
+2. Components
+----------------------------------------
+
+	 a component controls a patch of screen called a 'view'
+	 e.g., the following views are controlled by components:
+	 	- app root with navigation links
+	 	- list of heros
+	 	- hero editor
+
+	you define a component's logic - what it does to support the view - inside
+	a class.  The class interacts with the view thru an API of properties and
+	methods.
+
+		 	
+
+
+
+
+
+
+
+
+
