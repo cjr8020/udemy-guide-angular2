@@ -202,7 +202,7 @@ angular 2 emulates the concept of shadow DOM:
 	*************
 
 https://angular.io/docs/ts/latest/guide/architecture.html
-  
+
 
 Angular applications are composed of:
 	1. HTML templates with angularized markup,
@@ -320,11 +320,148 @@ Angular modules and JavaScript modules
 	a class.  The class interacts with the view thru an API of properties and
 	methods.
 
+    e.g. this HeroListcomponent has a 'heroes' property that returns an array
+    of heroes that is acquires from a service.
+    it also has a selectHero() method that sets a selectedHero property when
+    a user clicks to choose a hero from that list.
+
+
+3. Templates
+----------------------------------------
+
+  you define a component's view with its companion template.
+  a template is a form of HTML that tells Angular how to render the component.
+  In addition to HTML, templates use Angular's template syntax.
+
+
+
+
+4. Metadata
+----------------------------------------
+5. Data binding
+----------------------------------------
+6. Directives
+----------------------------------------
+7. Services
+----------------------------------------
+8. DI
+----------------------------------------
+		 	
+==============================================================================
+
+  template syntax
+  ***************
+
+https://angular.io/docs/ts/latest/guide/template-syntax.html
+
+interpolation  
+----------------------------------------
+
+  {{title}}
+  {{ 1 + 1 + getVal() }}
+
+
+template expressions
+----------------------------------------
+  produces a value
+  angular executes the expression, assigns it to a property of a binding
+  target - a HTML element, a component, or a directive
+
+    [property] = "expression"
+
+
+
+template statements
+----------------------------------------
+
+  (event) = "statement"
+
+  a template statement responds to an event raised by a binding target such as
+  an element, component, or directive
+
+  has side effect
+  it's how we update application state from user input.
+  there would be no point to responding to an event otherwise.
+
+
+binding syntax
+----------------------------------------
+
+  one-way
+  from data source to view target   
+        {{expression}}
+        [target] = "expression"
+        bind-target = "expression"
+
+  one-way
+  from view target to data source
+        (target) = "statement"
+        on-target = "statement"
+
+  two-way
+        [(target)] = "expression"
+        bindon-target = "expression"
+
+
+
+property binding
+----------------------------------------
+  we write a template property binding when we want to set a property of a
+  view element to the value of a template expression. 
+  e.g. binding the 'src' property of an image to 'heroImageUrl' property:
+
+    <img [src] = "heroImageUrl">
+
+  disabling a button when the component says that it "isUnchanged"
+
+    <button [disabled] = "isUnchanged">Cancel is disabled</button>
+
+  setting a property of a directive
+
+    <div [ngClass] = "classes">[ngClass] binding to the classes property</div>        
+
+    one-way in
+    ----------
+
+    
+
+
+attribute, class and style bindings
+----------------------------------------
+event binding
+----------------------------------------
+two-way binding
+----------------------------------------
+built-in directives
+----------------------------------------
+* and <template>
+----------------------------------------
+template reference variables
+----------------------------------------
+input and output properties
+----------------------------------------
+
+
 		 	
 
+==============================================================================
 
+  angular component lifecycle
+  ***************************
+https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 
+ngOnChanges
+ngOnInit
+ngDoCheck
 
+  ngAfterContentInit
+  ngAfterContentChecked
+  ngAfterViewInit
+  ngAfterViewChecked
+
+ngOnDestroy
+
+==============================================================================
 
 
 
