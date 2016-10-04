@@ -20,6 +20,22 @@ Local project package:
 
 ==============================================================================  
 
+List currently installed version
+--------------------------------
+
+$ npm list -g --depth=0 | grep angular-cli
+
+typescript
+----------
+
+$ sudo npm install -g typescript@next
+$ tsc --version
+Version 2.1.0-dev.20161003
+
+  
+
+==============================================================================  
+
 NOTE: angular-cli@1.0.0-beta.11-webpack.8 does NOT work with typescript@2.0.2
 so for now when you run 
   $ ng new blah
