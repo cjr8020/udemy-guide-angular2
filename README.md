@@ -53,10 +53,37 @@ Installing packages for tooling via npm.
 
 ```
 
+### create new 'header' component
+
+```
+$ cd src/app
+$ ng g c header --flat
+installing component
+  create src/app/header.component.css
+  create src/app/header.component.html
+  create src/app/header.component.spec.ts
+  create src/app/header.component.ts
+```
+remove header.component.css, as well as remove ```styleUrls: ['./header.component.css']```
+from header.component.ts
+
+
 
 ## angular-cli
 
 ### Migrating to webpack-based cli
+
+Some differences between pre-webpack and the webpack (beta16) versions:
+
+* new components are now registered in app.module.ts in 'declarations':
+
+```
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+```  
+
 
 Global package:
 
