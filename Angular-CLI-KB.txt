@@ -346,12 +346,39 @@ ng init <glob-pattern> <options>
 
     creates a new angular-cli project in the current folder
 
-    --dry-run
-    -d
-    --verbose
-    -v
-    --blueprint
-    -b
+  --dry-run (Boolean) (Default: false)
+    aliases: -d
+
+  --verbose (Boolean) (Default: false)
+    aliases: -v
+
+  --blueprint (String)
+    aliases: -b <value>
+
+  --link-cli (Boolean) (Default: false)
+    aliases: -lc
+
+  --skip-npm (Boolean) (Default: false)
+    aliases: -sn
+
+  --skip-bower (Boolean) (Default: true)
+    aliases: -sb
+
+  --name (String) (Default: )
+    aliases: -n <value>
+
+  --source-dir (String) (Default: src)
+    aliases: -sd <value>
+
+  --style (String) (Default: css)
+
+  --prefix (String) (Default: app)
+    aliases: -p <value>
+
+  --mobile (Boolean) (Default: false)
+  
+  --routing (Boolean) (Default: false)
+
 
 ng new <app-name> <options>
   creates a new directory and runs 'ng init' in it

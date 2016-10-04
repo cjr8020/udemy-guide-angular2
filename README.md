@@ -1,5 +1,59 @@
 # Angular 2 
 
+## creating course project
+
+```
+$ ng new recipe-book --prefix rb
+```
+
+but because I already have this project folder 
+
+```
+$ ng init --name recipe-book --prefix rb
+```
+
+The cli executes the following:
+
+```
+installing ng2
+? Overwrite README.md? No, skip
+? Overwrite .gitignore? No, skip
+  create .editorconfig
+  skip README.md
+  create src/app/app-routing.module.ts
+  create src/app/app.component.css
+  create src/app/app.component.html
+  create src/app/app.component.spec.ts
+  create src/app/app.component.ts
+  create src/app/app.module.ts
+  create src/app/index.ts
+  create src/app/shared/index.ts
+  create src/assets/.gitkeep
+  create src/assets/.npmignore
+  create src/environments/environment.prod.ts
+  create src/environments/environment.ts
+  create src/favicon.ico
+  create src/index.html
+  create src/main.ts
+  create src/polyfills.ts
+  create src/styles.css
+  create src/test.ts
+  create src/tsconfig.json
+  create src/typings.d.ts
+  create angular-cli.json
+  create e2e/app.e2e-spec.ts
+  create e2e/app.po.ts
+  create e2e/tsconfig.json
+  skip .gitignore
+  create karma.conf.js
+  create package.json
+  create protractor.conf.js
+  create tslint.json
+Installing packages for tooling via npm.
+
+```
+
+
 ## angular-cli
 
 ### Migrating to webpack-based cli
