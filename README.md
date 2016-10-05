@@ -67,7 +67,16 @@ installing component
 remove header.component.css, as well as remove ```styleUrls: ['./header.component.css']```
 from header.component.ts
 
+### create new 'recipes' component
 
+in src/app, run:
+```
+$ ng g c recipes 
+  create src/app/recipes/recipes.component.css
+  create src/app/recipes/recipes.component.html
+  create src/app/recipes/recipes.component.spec.ts
+  create src/app/recipes/recipes.component.ts
+```
 
 ## angular-cli
 
