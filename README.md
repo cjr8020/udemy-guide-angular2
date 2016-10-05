@@ -78,6 +78,42 @@ $ ng g c recipes
   create src/app/recipes/recipes.component.ts
 ```
 
+#### create `recipe-list` component inside `recipes` component
+
+```
+$ cd src/app/recipes
+$ ng g c recipe-list
+installing component
+  create src/app/recipes/recipe-list/recipe-list.component.css
+  create src/app/recipes/recipe-list/recipe-list.component.html
+  create src/app/recipes/recipe-list/recipe-list.component.spec.ts
+  create src/app/recipes/recipe-list/recipe-list.component.ts
+
+```
+#### create `recipe-item` component within `recipe-list` component
+
+```
+$ cd recipe-list
+$ ng g c recipe-item --flat
+installing component
+  create src/app/recipes/recipe-list/recipe-item.component.css
+  create src/app/recipes/recipe-list/recipe-item.component.html
+  create src/app/recipes/recipe-list/recipe-item.component.spec.ts
+  create src/app/recipes/recipe-list/recipe-item.component.ts
+$ rm recipe-item.component.css
+```
+#### create `recipe` model class
+
+```
+$ cd src/app/recipes
+$ ng g cl recipe
+installing class
+  create src/app/recipes/recipe.spec.ts
+  create src/app/recipes/recipe.ts
+
+```
+
+
 ## angular-cli
 
 ### Migrating to webpack-based cli
