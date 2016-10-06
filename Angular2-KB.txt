@@ -340,6 +340,8 @@ Angular modules and JavaScript modules
 ----------------------------------------
 5. Data binding
 ----------------------------------------
+     
+
 6. Directives
 ----------------------------------------
 7. Services
@@ -383,6 +385,28 @@ template statements
   it's how we update application state from user input.
   there would be no point to responding to an event otherwise.
 
+Data binding
+************
+
+
+  component logic interacts with component template (view)
+
+  - string interpolation
+    {{exp resolving to a string}}
+
+  - property binding
+    binding data to properties in your DOM
+    <button [disabled] = "exp resolving to required value type">  
+
+  - event binding 
+    binding DOM events back to the model
+    <button (click) = "expression handling the event">
+
+  - two-way binding
+    by default all Angular2 data binding is uni-diretional
+    for performance reasons.
+    <input [(ngModel)] = "bound model (e.g. object)">
+
 
 binding syntax
 ----------------------------------------
@@ -418,12 +442,57 @@ property binding
 
   setting a property of a directive
 
-    <div [ngClass] = "classes">[ngClass] binding to the classes property</div>        
+    <div [ngClass] = "classes">[ngClass] binding to the classes property</div>
+    <div (ngSubmit) = "..."></div>   
+
+  binding to component properties
+
+    <cmp [initObj] = "...">
+    <cmp (rndEvent) = "...">    
+
+  custom bindings
+
+    Property Binding (@Input)
+
+      @Input() propertyName: string 
 
     one-way in
     ----------
 
-    
+  property binding is described as "one-way data binding" because it
+  flows a value in one direction, from a component's data property into
+  a target element property.
+
+    Event Binding (@Output)  
+    .......................
+
+      @Output() eventName = new EventEmitter();  
+    or
+      <button (click)="onClicked()">Click Me</button>
+
+      onClicked() {
+        alert('it worked');
+      }
+
+    Binding to Custom events
+    ........................
+
+      <button (click)="onClicked()">Click Me!</button>
+
+      @Output() clicked = new EventEmitter<string>();
+      onClicked() {
+        this.clicked.emit('It Works!');
+      }
+
+      now, to consume this custom event:
+
+      <app-event-binding (clicked)="onClicked($event)"></app-event-binding>
+      and in this component.ts:
+
+      onClicked(value: string) {
+        alert(value);
+      }
+
 
 
 attribute, class and style bindings
