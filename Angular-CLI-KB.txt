@@ -477,7 +477,56 @@ Finally, add the Bootstrap CSS to the apps[0].styles array:
 Restart 'ng serve' if you're running it, and bootstrap 4 should be working.
 
 
+ng2-bootstrap
+*************
+contains all core (and not only) Bootstrap components powered by Angular2.
+So you don't need to include original JS components, but we are using markup
+and CSS provided by Bootstrap.
 
+installation:
+
+$ npm install ng2-bootstrap --save
+You will need to bootstrap styles:
+
+<!-- index.html -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+To use ng2-bootstrap with Angular CLI
+-------------------------------------
+https://github.com/valor-software/ng2-bootstrap/blob/development/docs/getting-started/ng-cli.md
+
+$ ng new my-app
+$ cd my-app
+$ ng serve
+
+Adding bootstrap: 
+
+1. install ng2-bootstrap and bootstrap
+
+  $ npm install ng2-bootstrap bootstrap --save
+
+2. open src/app/app.module.ts and add:
+
+import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
+...
+
+@NgModule({
+   ...
+   imports: [AlertModule, ... ],
+    ... 
+})
+
+3. open angular-cli.json and insert a new entry into the styles array
+
+      "styles": [
+        "styles.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+      ],
+
+4. to validate, open src/app/app.component.html and add:
+
+<alert type="success">hello</alert>        
 
 
 
