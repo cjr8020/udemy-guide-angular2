@@ -59,6 +59,8 @@ To create all component with a particular prefix
 
   $ ng new <project-name> --prefix <prefix-name>
 
+
+
 Components have selectors, and prefixes would help with the selectors.
 
 
@@ -141,6 +143,9 @@ will have to be manually removed
 
 
 
+To generate a new component with flat structure, inline styles and template
+
+  $ ng g c <component-name> --flat -it -is
 
 
 
