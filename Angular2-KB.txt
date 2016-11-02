@@ -346,9 +346,143 @@ Angular modules and JavaScript modules
 ----------------------------------------
 7. Services
 ----------------------------------------
+
+  Service is a broad category encompassing any value, function, or feture that
+  your application needs.
+
+  Almost anything can be a service.
+  Typically is a class with a narrow, well-defined purpose.
+  Examples:
+  - logging service
+  - data service
+  - message bus
+  - tax calculator
+  - application configuration
+
+Angular has no definition of services.
+There is no service base class, and no place to register a service.
+Yet services are fundamental - components are big consumers of services.
+
+example of a service class that logs to browser console:
+app/logger.service.ts:
+
+  export class Logger {
+    log(msg: any) { console.log(msg); }
+    error(msg: any) { console.error(msg); }
+    warn(msg: any) { console.warn(msg); }
+  }
+
+example of HeroService that fetches heroes and returns them in a resolved
+Promise.  This services also depends on the Logger service and another 
+BackendService that handles the server comm grunt work:
+
+app/hero.service.ts
+
+  export class HeroService {
+    private heroes: Hero[] = [];
+
+    constructor(
+      private backend: BackendService,
+      private logger: Logger
+    ) {}
+
+    getHeroes() {
+      this.backend.getAll(Hero).then(
+        (heroes: Hero[]) => {
+          // ... 
+        });
+      );
+    }
+  }
+
+Component classes should be lean - they don't fetch data from the server,
+validate user input, or log directly to the console.
+They delegate such tasks to services.
+
+A component's job is to enable the user experience - nothing more. 
+It mediates between the view (rendered by the template) and the application
+logic (which often includes some notion of a model).
+
+A good component presents properties and methods for data binding.
+It delegates everything non-trivial to services.
+
+
+
+
 8. DI
 ----------------------------------------
+
+Main points:
+
+  injector - main DI mechanism
+
+    maintains a container of service instances that it created
+
+    can create a new service instance from a provider
+
+  provider is a recipe for creating a service
+
+  you register providers with injector
+  
+      
 		 	
+  Services and DI
+  ---------------
+
+Most dependencies are services - Angular uses DI to provide new components with the 
+services they need.
+Angular can tell which services a component needs by looking at the types of 
+its constructor parameters.
+
+E.g. constuctor of the HeroListcomponent:
+
+  constructor(private service: HeroService) {}
+
+When Angular creates the component, it asks an INJECTOR for the services that 
+the component requires.
+
+An injector maintains a container of service instances that it has previously
+created.  If a requested service instance is not in the container, the 
+injector makes one and adds it to the container before returning the service 
+to Angular.
+
+    How does the injector know how to make one?
+
+You must have previously registered a PROVIDER of the HeroService with the 
+injector.  A provider is something that can create or return a service, 
+typically a service class itself.  You can register providers in modules or
+in components.
+
+In general, add providers to the root module so that the same instance of a
+service is available everywhere.
+
+    root module
+    app/app.module.ts
+
+      providers: [
+        BackendService,
+        HeroService,
+        Logger
+      ],
+
+alternatively, register at a component level in the providers property of 
+the @Component metadata:
+
+  app/hero-list.component.ts
+
+    @Component({
+      moduleId: module.id,
+      selector: 'hero-list',
+      templateUrl: 'hero-list.component.html',
+      providers: [ HeroService ]
+    })
+
+registering at a component level means you get a NEW instance of the service
+with each NEW instance of that component.
+
+
+
+
 ==============================================================================
 
   template syntax
