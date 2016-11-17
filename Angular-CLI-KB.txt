@@ -151,6 +151,97 @@ To generate a new component with flat structure, inline styles and template
 
 =====================================================================
 
+  creating a new service
+  **********************
+
+  $ ng g s <service-name> --flat --spec 
+
+    --flat (default: true)
+
+
+create config service
+---------------------
+$ mkdir src/app/shared
+craiskin@xubi-one:~/ws/standard/iam/iam-demo-ng2-product-app $ ng g s shared/Config
+installing service
+  create src/app/shared/config.service.spec.ts
+  create src/app/shared/config.service.ts
+  WARNING Service is generated but not provided, it must be provided to be used
+
+create mdm product service
+$ ng g s MdmProduct
+installing service
+  create src/app/mdm-product.service.spec.ts
+  create src/app/mdm-product.service.ts
+  WARNING Service is generated but not provided, it must be provided to be used
+
+
+create ConfigService
+--------------------
+
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+
+@Injectable()
+export class ConfigService {
+  public production: boolean = environment.production;
+  public mdmProductServer: string = environment.MDM_PRODUCT_SERVER;
+  public mdmProductApi: string = environment.MDM_PRODUCT_API;
+
+  public mdmProductApiURL(): string {
+    return this.mdmProductServer + this.mdmProductApi;
+  }
+}
+
+
+Provide ConfigService in @NgModule AppModule:
+---------------------------------------------
+
+import { AppComponent } from './app.component';
+import { environment } from '../environments/environment';
+import { ConfigService } from './shared/config.service';
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    AlertModule
+  ],
+  providers: [ ConfigService ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+
+  constructor() { }
+}
+
+use ConfigService in MdmProductService
+--------------------------------------
+
+import { Injectable } from '@angular/core';
+import { ConfigService } from './shared/config.service';
+
+@Injectable()
+export class MdmProductService {
+
+  constructor(private configService: ConfigService) { 
+    console.log(`
+      I'm MdmProductService, and I'm configured with ConfigService
+      ConfigService.mdmProductServer: ${configService.mdmProductApiURL()}
+    `);
+  }
+
+}
+
+
+
+=====================================================================
+
   angular-cli project folder structure (webpack)
   ************************************
 
