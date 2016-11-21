@@ -1,0 +1,335 @@
+
+  @@@@@@@@@@@
+
+      RxJS
+
+  @@@@@@@@@@@@
+
+
+  Functional Reactive Programming FRP
+  ***********************************
+
+Tutorial 1
+https://github.com/channikhabra/frp-with-rxjs-jschannel-conf/blob/master/README.org
+
+Task: 
+ - render tweets to a web page
+ - tweet looks like this
+      var tweets = [
+        {
+          id: 'tweet1',
+          username: 'koyote',
+          body: 'I will eventually catch you :3'
+        }
+        ...
+      (100 or so)];
+Dev spec:
+  - only show tweets from the logged-in user
+  - only show the tweets with specific hash-tags
+  - and replace the text emogies with images.
+
+So, the dev starts coding one problem at a time:
+
+var tweets = getTweets();
+tweets
+    .filter(t => t.username === me.username)   // filter tweets from this user
+    .filter(t => hasTag(selectedHTag, t.text)  // only tweets with selected #tag
+    .map(t => {
+      t.text = emogize(t.text);
+      return t;
+    })                     // replace text emogies with <img> tags
+                           // map is like filter but it takes a function... 
+    .forEach(t => render); // for each item in the processed collection, render...
+
+
+Code:
+
+    tweets
+      .filter(t => t.username === me.username)
+      .filter(t => t.text.split(' ').includes(selectedHTag))
+      .map(t => {
+        t.text = emogize(t.text);
+        return t;
+      })
+      .forEach(t => render);
+
+Source
+    +---------------------------+
+    |                           |
+    |        operations         |
+    |                           |
+    +---------------------------+
+                              Sink
+
+The data source is made to go through an operation, and the result is passed to
+a sink for side effects.
+The operations will not mutate the source.
+Given the same input, it will always produce same output - it's a pure function.
+Pure functions can be composed to make complex operations without any hassle.
+
+This functional approach brings a lot of value:
+
+  1. the code is readable
+  2. pure functions are easy to test
+  3. modular, compose-able code means ease of extension
+
+But this is JavaScript - turns out the source is asynchronous, and it produces
+one tweet at a time.
+
+First thing that came to mind - callbacks
+
+  - composability.. how would you compose with callbacks?
+  - dangling state can be nasty. imagine 6 levels deep with callbacks.  5th
+  uses something set by 2nd callback.  now debug
+  - readability is the first thing that gets murdered.
+
+Promises?
+
+Thanks to promises, async values can be passed around like regular data.
+but they are hard to compose.
+they resolve once at most and then be done with, and canceling a promise is not
+something you do in a pool of async requests
+
+with RxJS
+----------
+
+var tweets_ = Rx.Observable.fromPromise(getTweets);
+
+tweets_
+    .filter(t => t.username === me.username)
+    .filter(t => hasTag(selectedTag) )
+    .map(t => {
+      t.text = emogize(t.text);
+      return t;
+    })
+    .subscribe(x => render(x));
+
+
+
+================================================================================
+
+  Reactive Programming for Angular2
+  *********************************
+
+Stream
+  = sequence of values in time
+
+  e.g. stream of numeric values issued one every second
+
+  e.g. sequence of mouse clicks, with the (x, y) coordinates of the mouse click
+
+    (100,200), (110,300), (400, 50) ...
+
+  everything that happens in the browser can be seen as a stream: the sequence
+  of browser event that are triggered when the user interacts with the page,
+  data arriving from the server, timeouts getting triggered..
+
+  In order for the notion of stream to be useful to build a program, we need
+  a way to create streams, subscribe to them, react to new values, and 
+  combine streams together to build new ones
+
+Observable
+
+  your API for working with a stream:
+    - define a stream
+    - subscribe to it
+    - transform it
+
+RxJS
+------------
+
+  = Reactive Extensions for JS
+  = implementations of Observables for JS
+                  
+
+
+================================================================================
+
+  Observables
+  ***********
+
+https://miguelmota.com/blog/getting-started-with-rxjs/
+  
+
+is one of many ways of representing async values in JavaScript
+it's a lot like a Promise, but acts more like a collection of async values
+they are a first class async values like a promise is
+
+think of it as an array spanned over time
+it gets its values in future, and may or may not finish.
+
+Plural of Promise is an Observable.
+Observable in RxJS aims to mimic the interface of Array extras.
+
+
+of method
+---------
+  you can use of() to use a single value as an Observable.
+  with Observables, nothing gets run until there is a subscribe listening
+  to the Observable.  The Observer on the subscribe() method will contain the
+  final result as the parameter.
+
+
+hello world
+
+  Rx.Observable.of('hello world')
+    .subscribe(result => console.log(result));  // prints 'hello world'
+
+from method
+-----------
+
+  from() method creates an Observable sequence from arrays, array-like objects
+  or iterables such as Map, Set, or string
+
+    const set = new Set<number>([1,2,3]);
+    Rx.Observable.from(set)
+        .map(x => x*2)
+        .subscribe(x => console.log(x),
+                  error => console.error(error),
+                  () => console.log('done'));   
+
+fromEvent() method
+------------------
+
+  use to create an Observable from an event listener.  In this example, we log
+  the coordinates of the mouse position.
+
+  Rx.Observable.fromEvent(document, 'mousemove')
+    .subscribe(event => console.log(event.clientX, event.clientY));
+
+  Output:
+
+  95 292
+  107 292
+  141 297
+  173 305
+  ...    
+
+
+You can create new observables based on the original ones:
+----------------------------------------------------------
+
+const mouseMoves = Rx.Observable.fromEvent(document, `mousemove`)
+
+const movesOnRight = mouseMoves.filter(event => event.clientX > window.innerWidth / 2);
+const movesOnLeft = mouseMoves.filter(event => event.clientX > window.innerWidth / 2);
+
+movesOnRight.subscribe(event => console.log(`Right side`, event.clientX, event.clientY));
+movesOnLeft.subscribe(event => console.log(`Left side`, event.clientX, event.clientY));
+
+In Rx, methods that transform or query sequences are called operators.
+Above, filters() are operators.
+
+Now imagine, you wanted to get coordinates of 10 clicks that occur on the 
+right side of the screen - like a SQL db query:
+
+  SELECT x,y FROM clicks LIMIT 10
+
+Traditional imperative, non-declarative way:
+
+    let clicks = 0;
+
+    document.addEventListener('click', function clickHandler(event) {
+      if (clicks < 10) {
+        if (event.clientX > window.innerWidth / 2) {
+          console.log(event.clientX, event.clientY);
+          clicks += 1;
+        }
+      } else {
+        document.removeEventListener('click', clickHandler);
+      }
+    });
+
+
+RxJS version:
+
+    Rx.Observable.fromEvent(document, 'click')
+    .filter(event => event.clientX > window.innerWidth / 2)
+    .take(10)
+    .subscribe(data => console.log(data.clientX, data.clientY))    
+
+
+
+bindCallback() method
+---------------------
+
+  useful when you want to create an Observable from a function that invokes a
+  callback with the value.
+
+    const hello = (message, callback) => callback(`Hello ${message}`);
+    const sayHello = Rx.Observable.bindCallback(hello);
+
+    const source = sayHello('World');
+    source.subscribe(result => console.log(result));
+
+
+fromPromise() method
+--------------------
+
+  useful to create an Observable from a Promise
+
+    const promise = new Promise( (resolve, reject) => resolve('Hello World') );
+
+    const subscription = Rx.Observable.fromPromise(promise)
+    .subscribe(
+          x => console.log(x),
+          error => console.error(error),
+          () => console.log('done')
+        );
+
+
+================================================================================
+
+  Observer pattern
+  ****************
+
+https://miguelmota.com/blog/getting-started-with-rxjs/
+
+In the Observer pattern, aka Publisher/Subscriber pattern, there is an object
+called Producer (aka Subject) that keeps references of all listeners (aka
+Subscribers) subscribed to it.
+
+  console.log("------ Observer pattern -------");
+
+  class Producer {
+
+    listeners: any[];
+
+    constructor() {
+      this.listeners = [];
+    }
+
+    public add(listener: any): void {
+      this.listeners.push(listener);
+    }
+
+    public remove(listener: any): void {
+      var index = this.listeners.indexOf(listener);
+      this.listeners.splice(index, 1);
+    }
+
+    public notify(message): void {
+      this.listeners.forEach(listener => listener(message));
+    }
+  }
+
+  const notifier = new Producer();
+  const listener = (message) => console.log(`Listerner received message: ${message}`);
+
+  notifier.add(listener);
+  notifier.notify('Hello');
+
+
+
+================================================================================
+
+  RxJS Angular2 pitfalls
+  **********************
+http://blog.angular-university.io/angular-2-rxjs-common-pitfalls/
+
+pitfall 1 - nothing happens
+---------------------------
+
+
+
+================================================================================
