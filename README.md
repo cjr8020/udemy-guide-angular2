@@ -2,6 +2,12 @@
 
 ## creating course project
 
+
+#### Recipe Book Component Layout
+
+![recipe book component layout](./doc-assets/recipe-book-compoent-layout.jpg)
+
+
 ```
 $ ng new recipe-book --prefix rb
 ```
