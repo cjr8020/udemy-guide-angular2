@@ -8,7 +8,7 @@
 Updating angular-cli
 --------------------
 
-$ sudo npm uninstal -g angular-cli
+$ sudo npm uninstall -g angular-cli
 $ sudo npm cache clean -f
 $ sudo npm install -g angular-cli@latest
 
@@ -33,6 +33,34 @@ $ tsc --version
 Version 2.1.0-dev.20161003
 
   
+
+==============================================================================  
+  update node and npm
+  *******************
+
+nodejs
+------
+
+$ sudo npm cache clean -f
+$ sudo npm install -g n
+$ sudo n stable
+
+$ sudo ln -sf /usr/local/n/versions/node/<VERSION>/bin/node /usr/bin/node
+
+To upgrade to the latest version (not the current stable):
+
+$ sudo n latest
+
+To undo:
+
+  sudo apt-get install --reinstall nodejs-legacy     # fix /usr/bin/node
+  sudo n rm 6.0.0     # replace number with version of Node that was installed
+  sudo npm uninstall -g n
+
+npm
+----
+
+$ sudo npm install npm -g
 
 ==============================================================================  
 

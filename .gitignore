@@ -29,6 +29,9 @@ testem.log
 
 ####### common ignores below #######
 
+# VSCode
+.vscode/*
+
 # Eclipse/RAD
 .settings/
 .metadata/
