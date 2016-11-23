@@ -120,6 +120,19 @@ installing class
 ```
 
 
+#### create `recipe-detail` component
+
+```
+src/app/recipes $ ng g c recipe-detail
+  create src/app/recipes/recipe-detail/recipe-detail.component.css                     
+  create src/app/recipes/recipe-detail/recipe-detail.component.html                    
+  create src/app/recipes/recipe-detail/recipe-detail.component.spec.ts                 
+  create src/app/recipes/recipe-detail/recipe-detail.component.ts        
+```
+
+stopped at course 3 lesson 38 Recipe Detail at 3:26
+
+
 ## angular-cli
 
 ### Migrating to webpack-based cli
