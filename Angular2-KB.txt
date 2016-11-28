@@ -674,9 +674,10 @@ template statements
   it's how we update application state from user input.
   there would be no point to responding to an event otherwise.
 
+
+
 Data binding
 ************
-
 
   component logic interacts with component template (view)
 
@@ -752,6 +753,145 @@ property binding
   flows a value in one direction, from a component's data property into
   a target element property.
 
+
+
+
+
+attribute, class and style bindings
+----------------------------------------
+
+
+
+
+
+event binding
+----------------------------------------
+
+  User interact with your application
+  - they click buttons
+  - pick items from lists
+  - enter text into input boxes
+
+  Such user actions may result in data flowing in the opposite direction:
+
+  data flow:
+
+    from an element to a component
+
+  The only way to know about a user action is to listent for certain events 
+  such as keystrokes, mouse movements, clicks and touches.
+
+  We declare our interest in user actions thru Angular event binding.
+
+  Event Binding syntax
+
+    (target event) = "template statement"
+
+      TARGET EVENT - appears between parenthesis.
+
+        <button (click) = "onSave()">Save</button>  
+
+      Canonical form:
+
+        some people prefer the "on-" prefix alternative, known as canonical form:
+
+        <button on-click="onSave()">On Save</button>
+
+  Matching order
+
+    - directives
+    - elements
+
+    element events may be the more common targets, but Angular looks to see 
+    if the name matches an event property of a known directive FIRST.
+
+      <!-- 'myclick' is an event on the custom 'clickDirective' -->
+      <div (myClick)="clickmessage=$event">click with myClick</div>
+
+
+    $event 
+    ........................
+
+    In an event binding, Angular sets up an event handler for the target event.
+
+    when the event is raised, the handler executes the template statement.
+    The template statement typically involves a receiver which performs an action
+    in response to the event, such as storing a value from the HTML control 
+    into a model.
+
+    the binding conveys info about the event, inclu data values, thru an
+    event object named 
+
+      $event
+
+    the shape of the event object is determined by the target event.
+    If the target event is a native DOM element event, then $event is a
+    DOM event object, with properties such a "target" and "target.value"
+
+      <input [value]="currentHero.firstname"
+             (input)="currentHero.firstname=$event.target.value">
+
+    this code:
+      - sets the input box "value" property by binding to the "firstName" 
+        property
+      - to listen for changes to the value, the code binds to the input box's
+        "input" event.  when the user makes changes, the "input" event is 
+        raised, and the binding executes the statement within a context that
+        includes the DOM event object, $event.
+      - to update the "firstName" property, the changed text is retrieved from
+          $event.target.value
+
+
+
+    EventEmitter
+    ........................                                   
+
+      Directives typically raise custom events with an Angular EventEmitter.
+
+      example
+
+        consider a HeroDetailComponent that presents hero info and responds to 
+        user actions.  Although the HeroDetailComponent has a delete button,
+        it doesn't know how to delete the hero itself..
+        The best it can do is raise an event reporting the user's delete request.
+
+        template:
+        -------------
+          <div>
+            <img src="{{heroImageUrl}}">
+            <span>{{prefix}} {{hero?.fullName}}</span>
+            <button (click)="delete()">Delete</button>
+          </div>
+
+        hero-detail.component.ts (delete logic):
+        ----------------------------------------
+
+          // this component make a request but it can't actually delete a hero
+          deleteRequest = new EventEmitter<Hero>();
+
+          delete() {
+            this.deleteRequest.emit(this.hero);
+          }
+
+        the component defines a "deleteRequest" property that returns an 
+        EventEmitter.  When the user clicks "delete", the component invokes
+        the "delete()" method telling the EventEmitter to emit a Hero object.
+
+        Now, imagine a hosting parent component that binds to the 
+        HeroDetailComponent's "deleteRequest" event:
+
+          <hero-detail 
+            (deleteRequest)="deleteHero($event)"
+            [hero]="currentHero"></hero-detail>
+
+        when the "deleteRequest" event fires, Angular calls the parent 
+        component's "deleteHero(..)" method, passing the hero-to-delete 
+        in the $event variable.
+
+        
+
+
+
     Event Binding (@Output)  
     .......................
 
@@ -784,10 +924,8 @@ property binding
 
 
 
-attribute, class and style bindings
-----------------------------------------
-event binding
-----------------------------------------
+
+
 two-way binding
 ----------------------------------------
 built-in directives
