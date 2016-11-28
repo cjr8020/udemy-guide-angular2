@@ -130,12 +130,39 @@ src/app/recipes $ ng g c recipe-detail
   create src/app/recipes/recipe-detail/recipe-detail.component.ts        
 ```
 
+
+#### create `shopping-list` component
+
+```
+  src/app $ ng g c shopping-list
+  installing component
+    create src/app/shopping-list/shopping-list.component.css
+    create src/app/shopping-list/shopping-list.component.html
+    create src/app/shopping-list/shopping-list.component.spec.ts
+    create src/app/shopping-list/shopping-list.component.ts  
+```
+creates new folder `shopping-list` in src/app older as sibling to recipes.
+
+
+#### create `shopping-list-add` component
+
+with flat file structure inside `shopping-list` folder
+
+```
+  src/app/shopping-list $ ng-list-add --flat
+
+  installing component
+    create src/app/shopping-list/shopping-list-add.component.css
+    create src/app/shopping-list/shopping-list-add.component.html
+    create src/app/shopping-list/shopping-list-add.component.spec.ts
+    create src/app/shopping-list/shopping-list-add.component.ts
+```
+
+
+
+
+
 #### application component layout walkthrough
-
-
-
-
-
 
 
 index.html
@@ -268,7 +295,6 @@ rb-recipe-list HTML template:
 
 
 
-next: 3 lesson 38 Recipe Detail at 3:26
 
 
 ## angular-cli

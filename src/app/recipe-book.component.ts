@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+// import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 @Component({
   selector: 'rb-root',

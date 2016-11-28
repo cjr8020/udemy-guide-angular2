@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RecipeListComponent } from './recipe-list/recipe-list.component';
+// import { RecipeListComponent } from './recipe-list/recipe-list.component';
 import { Recipe } from "./recipe";
 
 @Component({
