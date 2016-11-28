@@ -130,7 +130,145 @@ src/app/recipes $ ng g c recipe-detail
   create src/app/recipes/recipe-detail/recipe-detail.component.ts        
 ```
 
-stopped at course 3 lesson 38 Recipe Detail at 3:26
+#### application component layout walkthrough
+
+
+
+
+
+
+
+index.html
+----------
+references component <rb-root>
+
+<rb-root>
+--------
+
+<rb-root> selector identifies recipe-book.component
+
+the HTML template for recipe-book component is
+recipe-book.component.html
+--------------------------
+
+It declares two components:
+
+	rb-header
+	rb-recipes
+
+		<rb-header></rb-header>
+		<div class="container">
+		  <rb-recipes></rb-recipes>
+		</div>
+
+
+<rb-recipes>
+------------
+
+recipes.component.ts
+
+recipes.component.html
+
+uses two components:
+
+	rb-recipe-list
+	rb-recipe-detail
+
+
+		<div class="row">
+		  <div class="col-sm-5">
+		    <rb-recipe-list></rb-recipe-list>
+		  </div>
+		  <div class="col-sm-7">
+		    <rb-recipe-detail></rb-recipe-detail>
+		  </div>
+		</div>
+
+<rb-recipe-list>
+----------------
+
+rb-recipe-list HTML template:
+
+1. "new recipe" button
+2. unordered list of <rb-recipe-item>
+
+	<div class="row">
+	  <div class="col-xs-12">
+	    <a class="btn btn-success">New Recipe</a>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-xs-12">
+	    <ul class="list-group">
+	      <rb-recipe-item [recipe]="recipe" (click)="onSelected(recipe)"></rb-recipe-item>
+	    </ul>
+	  </div>
+	</div>
+
+
+ Here, "recipe" property of <rb-recipe-item> component is bound as target to "recipe" property of the parent - <recipe-list>:
+
+ 		<rb-recipe-item [recipe]="recipe"></rb-recipe-item>
+
+ 	so, RecipeListComponent has the following set:
+
+ 		recipe = new Recipe('Dummy', 'Dummy', 'http://dummy');
+
+ 	that is the "recipe" property that is bound to [recipe] of <rb-recipe-item>
+
+ 	at the same time <rb-recipe-item> (the child component) has 
+
+ 		@Input() recipe: Recipe;  // property to be set from outside
+
+
+<rb-recipe-item>
+
+	recipe-item object has two properties:
+
+		- recipe (which is declarated with @Input())
+		- recipeId
+
+	"recipe" property is being set from outside by the parent component, <recipe-list>.
+
+	recipe-item.component.ts
+
+		export class RecipeItemComponent implements OnInit {
+		  @Input() recipe: Recipe;
+		  recipeId: number;
+
+		  constructor() { }
+
+		  ngOnInit() {
+		  }
+
+		}
+
+
+
+<rb-recipe-detail>
+
+
+	recipe-detail.component.ts
+
+		export class RecipeDetailComponent implements OnInit {
+
+		  @Input() selectedRecipe: Recipe;
+		  constructor() { }
+
+		  ngOnInit() {
+		  }
+
+		}
+
+
+
+
+
+
+
+
+
+next: 3 lesson 38 Recipe Detail at 3:26
 
 
 ## angular-cli

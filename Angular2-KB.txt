@@ -334,6 +334,161 @@ Angular modules and JavaScript modules
   In addition to HTML, templates use Angular's template syntax.
 
 
+  Template syntax
+  ***************
+
+  Templates display data and consume user events with the help of data binding.
+
+    MVC or MVVM (mode-view-viewmodel)
+
+  In Angular, the component plays the part of the Controller/Viewmodel, and
+  the template represents the view.
+
+    Basic Elements of Template syntax
+
+  HTML
+  Interpolcation
+  Template expressions
+  Template statements
+  Binding syntax
+  Property binding
+  Attribute, class and style bindings
+  Event binding
+  Two-way data binding
+  Built-in directives (NgClass, NgStyle, NgIf, NgFor, etc.)
+
+  HTML
+    almost all HTML syntax is valid template syntax.
+    <script> element is notable exception - forbidden due to injection risk
+
+  interpolation
+    we use interpolation to weave calculated strings into the text between HTML element
+    tags and within attribute assignments
+
+        <h3>
+          {{title}}
+          <img src="{{heroImg}}" ... >
+        </h3>
+
+  template expressions
+    produce a value
+    angular executes the expression and assigns it to a property of a binding target
+
+      [property]="expression"
+
+      [disabled]="isUnchanged"
+
+    template expressions cannot refer to anything in the global namespace.
+    can't refer to window or document, can't call console.log or Math.max
+
+    the expression context is typically the component instance which is the source
+    of binding values.
+
+    Guidelines:
+
+      - a template expression should not change any application state other than
+        the value of the target property
+
+      - quick execution
+        template expressions execute frequently - can be called every key press or
+        mouse move        
+
+      - simplicity: a property or method call should be the norm. ! is OK occasionally
+
+      - idempotence: should be free from side effects
+
+        Binding syntax
+
+          from data source to view target:
+
+        {{expression}}
+        [target-property] = "expression"
+
+          from view target to data source:
+
+        (target) = "statement"
+        on-target = "statement"
+
+
+          two-way
+
+        [(target)] = "expression"
+        bindon-target = "expression"
+
+    <button disabled>Save</button>
+
+  with data binding
+
+    <button [disabled]="isUnchanged">Save</button>                  
+
+
+    Binding Targets
+
+      the target of data binding is something in DOM.
+      it could be a element | component | diretive property
+      an event (element | component | directive) 
+
+      binding type: property
+
+        target:
+
+          element property:
+
+                <img [src] = "heroImgUrl">
+
+              component property
+
+                <hero-detail [hero]="currentHero"></hero-detail>
+
+              directive property:
+
+                <div [ngClass] = "{selected: isSelected}"></div>
+
+      binding type: event                  
+
+        target: 
+
+          element event
+
+              <button (click) = "onSave()">Save</button>
+
+          component event
+
+              <hero-detail (deleteRequest)="deleteHero()"></hero-detail>
+
+          directive event
+
+              <div (myClick)="clicked=$event">click me</div>
+
+
+
+      binding type: two-way              
+
+        target
+
+          event and property
+
+              <input [(ngModel)]="heroName">
+
+
+      attribute
+
+        <button [attr.aria-label]="help">help</button>
+
+      class
+
+        <div [class.special]j="isSpecial">Special</div>
+
+      style
+
+        <button [style.color] = "isSpecial ? 'red' : 'green'">
+
+
+      How the parent and child components can communicate with each other:
+      ---------------------------------------------------------------------
+
+        <hero-detail [hero]="currentHero"></hero-detail>
+      
 
 
 4. Metadata
