@@ -499,6 +499,50 @@ Angular modules and JavaScript modules
 
 6. Directives
 ----------------------------------------
+
+  A directive is a class with directive metadata.
+  In TS, apply the @Directive decorator to attach metadata to the class.
+
+  A component is a "directive-with-a-template".
+  @Component decorator is actually a @Directive extended with template-oriented
+  features.
+
+  two other kinds of directives exist:
+
+  1. structural
+  2. attribute
+
+  structural directives
+  ...................................
+
+    alter layout by adding, removing, and replacing elements in DOM.
+    the example template uses two built-in structural directives
+
+      <li *ngFor="let hero of heroes"></li>
+      <hero-detail *ngIf="selectedHero"></hero-detail>
+
+    *ngFor tells Angular to stamp out one <li> per hero in the 'heroes' list
+
+    *ngIf includes the HeroDetail component only if a selected hero exists.
+
+
+
+  attribute directives
+  ...................................    
+
+    alter the appearance or behaviour of an existing element.
+    In templates, the look like regular HTML attributes, hence the name.
+
+    ngModel directive implements two-way binding and is an example of an
+    attribute directive.
+    it modifies the behaviour of an existing element (typically <input>) by 
+    setting its display value property and responding to change events:
+
+      <input [(ngModel)]="hero.name">
+
+          
+
+
 7. Services
 ----------------------------------------
 
@@ -888,7 +932,7 @@ event binding
         component's "deleteHero(..)" method, passing the hero-to-delete 
         in the $event variable.
 
-        
+
 
 
 
