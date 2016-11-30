@@ -541,6 +541,28 @@ Angular modules and JavaScript modules
 
       <input [(ngModel)]="hero.name">
 
+  custom attribute directive
+  .....................................
+
+  $ ng g d highlight
+
+    import { Directive, ElementRef, Renderer } from '@angular/core';
+
+    @Directive({
+      selector: '[highlight]'
+    )}
+    export class HighlightDirective {
+
+      // this is a short cut for creating a private field at the class level
+      // and assigning to it in the constructor/method call
+      constructor(private elementRef: ElementRef, private renderer: Renderer) {
+        this.renderer.setElementStyle(
+          this.elementRef.nativeElement, 
+          'background-color', 
+          'green');
+      }
+
+    }
           
 
 
@@ -902,7 +924,7 @@ event binding
 
         template:
         -------------
-          <div>
+          <dimatchingv>
             <img src="{{heroImageUrl}}">
             <span>{{prefix}} {{hero?.fullName}}</span>
             <button (click)="delete()">Delete</button>
