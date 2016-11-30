@@ -531,10 +531,11 @@ Angular modules and JavaScript modules
   ...................................    
 
     alter the appearance or behaviour of an existing element.
-    In templates, the look like regular HTML attributes, hence the name.
+    In templates, they look like regular HTML attributes, hence the name.
 
     ngModel directive implements two-way binding and is an example of an
     attribute directive.
+
     it modifies the behaviour of an existing element (typically <input>) by 
     setting its display value property and responding to change events:
 
@@ -1095,6 +1096,164 @@ export class MdmProductService {
   }
 
 }
+
+
+
+
+
+================================================================================
+
+  Angular built-in directives
+  ***************************
+
+ngModel
+
+  when developing entry forms, we often want to both display a data property
+  and update that property when the user makes changes.
+
+  ngModel implements two-way binding and is an example of an attribute directive.
+
+    NOTE: must import FormsModule in app.module.ts
+
+    <input [(ngModel)]="currentHero.firstName">
+
+  the above can also be achieve with separate bindings to the <input> 
+  element's "value" property and "input" event:
+
+    <input [value]="currentHero.firstName"
+           (input)="curerentHero.firstName=$event.target.value" >
+
+  ngModel hides the complexity behind its own "ngModel" input and 
+  "ngModelChange" output properties:
+
+    <input
+      [ngModel]="currentHero.firstName"
+      (ngModelChange)="currentHero.firstName=$event" >
+
+
+
+ngClass
+
+  source: https://coryrylan.com/blog/introduction-to-angular-2-ngclass-and-ngstyle
+
+  creating dynamic styles for your application
+  ngClass helps us handle dynamic CSS and CSS classes with the new template syntax
+
+    ex: chaning <div> color property
+
+      pure JavaScript:
+
+        let myDiv = document.getElementById('my-div');
+        myDiv.style.color = 'orange';  // update 
+
+    out of the box, angular 2 provides primitives using [property] syntax
+    to manipulate elements attributes:
+
+      <div [style.color]="'orange'">
+        style using property syntax - this text is orange
+      </div>
+
+  we can also using angular2 [property] syntax to assign CSS class to element:
+
+    .blue { color: blue; }
+
+    <div [className]="'blue'">CSS class using property syntax - this text is blue</div>
+
+
+  manipulating <div> styles with ngStyle and angular2 component properties:
+
+    app.component.css:
+    ------------------
+
+    .show-class {
+      visibility: visible;
+    }
+
+    .hide-class {
+      visibility: hidden;
+    }
+
+
+    app.component.ts:
+    -----------------
+    export class AppComponent {
+
+      ngStyleDivColor: string;
+      ngStyleDivFontSize: number;
+      spanDisplayedText: string;
+      spanDisplayedTextVisible: boolean;
+
+      constructor() {
+        this.ngStyleDivColor = 'pink';
+        this.ngStyleDivFontSize = 16;
+        this.spanDisplayedText = 'show-class';
+        this.spanDisplayedTextVisible = true;
+      }
+
+      toggle() {
+        this.spanDisplayedTextVisible = !this.spanDisplayedTextVisible;
+        this.spanDisplayedText = this.spanDisplayedTextVisible ? 
+          'show-class' :
+          'hide-class';
+          
+      }
+    }
+
+    app.component.html:
+    -------------------
+
+    <h2>ngStyle</h2>
+
+    <input [(ngModel)]="ngStyleDivColor" />
+    <button (click)="ngStyleDivFontSize = ngStyleDivFontSize + 1">+</button>
+    <button (click)="ngStyleDivFontSize = ngStyleDivFontSize - 1">-</button>
+
+    <div 
+        id="using-ngStyle" 
+        [ngStyle]="{'color': ngStyleDivColor, 'font-size': ngStyleDivFontSize + 'px', 'font-weight': 'bold'}">
+      div style configured with ngStyle
+    </div>
+
+    <hr>
+
+    <span id="this-span" [ngClass]="spanDisplayedText">toggled with ngClass</span>
+    <button (click)="toggle()">Toggle</button>
+
+
+
+ngStyle
+
+  allows us to set inline styles dynamically based on the state of the component.
+  binding to ngStyle lets us set many inline styles simultaneously
+
+  with this template:
+
+    <div 
+        id="using-ngStyle" 
+        [ngStyle]="{'color': ngStyleDivColor, 'font-size': ngStyleDivFontSize + 'px', 'font-weight': 'bold'}">
+      div style configured with ngStyle
+    </div>
+    <input [(ngModel)]="ngStyleDivColor" />
+    <button (click)="ngStyleDivFontSize = ngStyleDivFontSize + 1">+</button>
+    <button (click)="ngStyleDivFontSize = ngStyleDivFontSize - 1">-</button>
+
+  we can manipulate the <div> element styles with the component state:
+
+    export class AppComponent {
+
+      ngStyleDivColor: string;
+      ngStyleDivFontSize: number;
+      spanDisplayedText: string;
+      spanDisplayedTextVisible: boolean;
+
+      constructor() {
+        this.ngStyleDivColor = 'pink';
+        this.ngStyleDivFontSize = 16;
+        this.spanDisplayedText = 'show-class';
+        this.spanDisplayedTextVisible = true;
+      }
+        
+    }
 
 
 
