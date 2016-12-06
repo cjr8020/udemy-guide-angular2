@@ -228,6 +228,40 @@ Angular 2 rendering architecture
 https://docs.google.com/document/d/1M9FmT05Q6qpsjgvH1XvCm840yn2eWEg0PMskSQz7k4E/edit
 
 
+Routing
+-------
+
+  Routing is another name for navigation.
+  The router is the mechanism for navigating from view to view.
+  Routes tell the router which views to display when a user clicks a link
+  or pastes a URL into the browsers' address bar.
+
+
+  Router 
+
+  Angular router is an external optional Angular NgModule called RouterModule.
+
+  It's a combination of 
+   - multiple provided services (RouterModule)
+   - multiple directives (RouterOutlet, RouterLink, RouterLinkActive)
+   - configuration (Routes)
+
+   <head>
+    <base href="/">
+
+    base href is important to make history.pushState work
+    add the base href just under the <head> tag.
+
+    if the "app" folder is the application root, set the href value to "/".
+
+    The Router uses the browser's pushState for navigation.
+    Thanks to pushState, we can make our in-app URL paths look the way 
+    we want them to look.
+
+    Our in-app URLs can be indistinguishable from server URLs.
+
+    The browser also needs the base <href> value to prefix relative URLs.
+
 
 1. Modules
 -----------
@@ -632,6 +666,23 @@ logic (which often includes some notion of a model).
 A good component presents properties and methods for data binding.
 It delegates everything non-trivial to services.
 
+
+
+  Async Services and Promises
+  ...........................
+
+if a service calls a remote server like
+
+  this.heroes = this.heroService.getHeroes();
+
+the method call sig is synchronous - and we will have to wait for the server to
+respond and we won't be able to block the UI while we wait.
+
+  Promises
+  --------
+
+A Promise is a promise to call us back later when the results are ready - 
+we ask an async service to do some work and give it a callback function.
 
 
 
@@ -1129,6 +1180,112 @@ export class MdmProductService {
 
 ================================================================================
 
+  RouterModule
+  ************
+
+  Angular router is an external optional Angular NgModule called RouterModule.
+
+  It's a combination of 
+   - multiple provided services (RouterModule)
+   - multiple directives (RouterOutlet, RouterLink, RouterLinkActive)
+   - configuration (Routes)
+
+Initial version:
+
+app.module.ts
+-------------
+
+import { RouterModule }   from '@angular/router';
+
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule,
+    RouterModule.forRoot([
+      {
+        path: 'heroes',
+        component: HeroesComponent
+      }
+    ])
+  ],   
+  .
+  .
+  .
+})
+export class AppModule {
+}
+
+We use the 'forRoot' method because we're providing a configured router at the 
+ROOT of the application.  
+
+The 'forRoot' method gives us the Router service providers and directives needed
+for routing and performs the initial navigation based on the current browser URL.
+
+    RouterModule.forRoot([
+      {
+        path: 'heroes',
+        component:HeroesComponent
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: '',
+        redirectTo: '/dashboard',
+        pathMatch: 'full'
+      }
+    ])
+
+
+
+    Router Outlet
+
+If we paste the path "/heroes" into the browser address bar, the router should 
+match it to the 'heroes' route and display the 'HeroesComponent'.
+
+    <a routerLink="/heroes">Heroes</a>
+    <router-outlet></router-outlet>
+
+
+    Parameterized Route
+
+
+We can add the object's id to the URL.
+
+  /detail/11
+
+  {
+    path: 'detail/:id',
+    component: HeroDetailComponent
+  },  
+
+The (:) in the path indicates that :id is a placeholder to be filled with a
+specific hero id when navigating to the HeroDetailComponent
+
+The corresponding [routerLink] for the above route would look like this:
+
+  [routerLink]="['/detail', hero.id]" 
+
+Here, we are binding a link parameters array:
+
+  ['/detail',hero.id]
+
+to our destination route:
+
+  path: 'detail/:id'
+
+The array has two elements:
+  path of the destination route
+  route parameter set to the value of the current hero's id
+
+  
+
+
+
+================================================================================
+
   Angular built-in directives
   ***************************
 
@@ -1366,6 +1523,19 @@ ngSwitch
 
 
 nfFor
+  
+  is a repeater directive - our goal is to represent a list of items.
+  we define a block of HTML that defines how  a single item should be 
+  displayed - and we tell angular to use that block as template for rendering 
+  each item in the list.
+
+    ngFor applied to a simple <div>:
+
+      <div *ngFor="let hero of heroes">{{hero.fullName}}</div>
+
+    ngFor applied to a component element
+
+      <hero-detail *ngFor="let hero of heroes" [hero]="hero"></hero-detail>
 
 
 
@@ -1404,8 +1574,19 @@ Custom Attribute directives
 
     
 
+================================================================================
 
+  go back browser back button
+  ***************************
 
+to navigate one step in the browser's history stack using the 'Location' service
+
+  this.location.back()
+
+Going back too far could take us out of the application.
+Guard against that with
+
+  CanDeactivate guard    
 
 
 ================================================================================
