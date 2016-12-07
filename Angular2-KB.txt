@@ -759,6 +759,14 @@ with each NEW instance of that component.
 
 
 
+Pipes
+------------------------------------------
+
+Pipes are a good way to format strings, currency amounts, dates and other
+display data.
+
+Angular ships with several pipes and we can write out own.
+
 
 ==============================================================================
 
@@ -1280,7 +1288,7 @@ The array has two elements:
   path of the destination route
   route parameter set to the value of the current hero's id
 
-  
+
 
 
 
@@ -1586,7 +1594,13 @@ to navigate one step in the browser's history stack using the 'Location' service
 Going back too far could take us out of the application.
 Guard against that with
 
-  CanDeactivate guard    
+  CanDeactivate guard  
+
+================================================================================    
+
+  Guard Services
+  **************
+https://angular.io/docs/ts/latest/guide/router.html#guards  
 
 
 ================================================================================

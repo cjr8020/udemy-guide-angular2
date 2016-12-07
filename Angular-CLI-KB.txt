@@ -88,6 +88,29 @@ To create all component with a particular prefix
   $ ng new <project-name> --prefix <prefix-name>
 
 
+module
+
+  $ ng g m <module-name>
+
+creates the following structure relative to working dir:
+
+  installing module
+    create src/app/module-name/module-name.module.ts
+  installing component
+    create src/app/module-name/module-name.component.css
+    create src/app/module-name/module-name.component.html
+    create src/app/module-name/module-name.component.spec.ts
+    create src/app/module-name/module-name.component.ts
+
+Other ioptions:
+
+  --spec   specifies if a spec file is generated
+  --routing (boolean) if a routing module file should be generated
+
+
+
+
+
 
 Components have selectors, and prefixes would help with the selectors.
 

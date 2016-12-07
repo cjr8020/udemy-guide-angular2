@@ -149,7 +149,7 @@ creates new folder `shopping-list` in src/app older as sibling to recipes.
 with flat file structure inside `shopping-list` folder
 
 ```
-  src/app/shopping-list $ ng-list-add --flat
+  src/app/shopping-list $ ng g c ng-list-add --flat
 
   installing component
     create src/app/shopping-list/shopping-list-add.component.css
