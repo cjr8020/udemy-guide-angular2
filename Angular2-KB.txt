@@ -1288,7 +1288,20 @@ The array has two elements:
   path of the destination route
   route parameter set to the value of the current hero's id
 
+routerLinkActive directive
+---------------------------
 
+Angular Router provides a routerLinkActive directive to add a class to the HTML 
+navigation element whose route matches the active route. Ex:
+
+  <nav>
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+  </nav>
+
+  nav a.active {
+    color: #039be5;
+  }  
 
 
 
@@ -1581,6 +1594,34 @@ Custom Attribute directives
     prefer using these to the 'host' property of the @Directive and @Component decorators
 
     
+
+================================================================================
+
+  Applications Styles
+  *******************
+
+When we add styles to a component, we're keeping everything a component needs -
+HTML, the CSS, the code - together in one convenient place.
+
+We can also create styles at the application level outside of any component.
+
+angular-cli provides styles.css at the index.html level and it's already 
+integrated into the project via 
+
+angular-cli.json:
+
+      "styles": [
+        "styles.css"
+      ],
+
+styles.css - allows users to add global styles and supports CSS imports
+
+  if the project is created with the --style=sass option, this will be a
+  .sass file instead and the same applies to scss/less/style.
+
+You can add more global styles via the apps[0].styles property in
+angular-cli.json
+
 
 ================================================================================
 
