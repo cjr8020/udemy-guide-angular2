@@ -1597,6 +1597,201 @@ Custom Attribute directives
 
 ================================================================================
 
+  HTTP Services
+  *************
+
+The HttpModule is not a core Angular module.
+It's Angular's optional approach to web access and it exists in a separate 
+add-on module called @angular/http.
+
+app.module.ts:
+
+import { HttpModule }   from '@angular/http';
+
+@NgModule({
+  imports: [
+    HttpModule
+  ],
+})
+export class AppModule { }
+
+Angular team recommends registering application-wide services in the root 
+'AppModule' providers.
+
+
+================================================================================
+
+  Mocking HTTP Services with angular-in-memory-web-api
+  ****************************************************
+
+https://github.com/angular/in-memory-web-api
+http://www.thoughtdelimited.org/thoughts/post.cfm/adding-the-in-memory-web-api-to-an-systemjs-based-angular-cli-application
+
+in-memory web API is not part of the Angular core.
+it is an optional service in its own "angular-in-memory-web-api" library installed 
+with npm via package.json
+
+Find out the latest version of 'angular-in-memory-web-api' available:
+
+ $ npm view angular-in-memory-web-api versions
+ 
+[ '0.1.0',
+  '0.1.1',
+  '0.1.2',
+  '0.1.3',
+  '0.1.4',
+  '0.1.5',
+  '0.1.6',
+  '0.1.7',
+  '0.1.8',
+  '0.1.9',
+  '0.1.10',
+  '0.1.11',
+  '0.1.12',
+  '0.1.13',
+  '0.1.14',
+  '0.1.15',
+  '0.1.16',
+  '0.1.17' ]
+
+
+$ npm install angular-in-memory-web-api --save
+
+  "dependencies": {
+    "@angular/common": "2.2.1",
+    "@angular/compiler": "2.2.1",
+    "@angular/core": "2.2.1",
+    "@angular/forms": "2.2.1",
+    "@angular/http": "2.2.1",
+    "@angular/platform-browser": "2.2.1",
+    "@angular/platform-browser-dynamic": "2.2.1",
+    "@angular/router": "3.2.1",
+    "angular-in-memory-web-api": "^0.1.17",
+
+
+
+in-memory-data.service.ts
+-------------------------
+
+
+
+Learn more about In-Memory Web API
+----------------------------------
+https://angular.io/docs/ts/latest/guide/server-communication.html#!#in-mem-web-api
+
+If the app only needs to retrieve data, you could get heroes from a heroes.json:
+
+{
+  "data": [
+    { "id": 1, "name": "Windstorm" },
+    { "id": 2, "name": "Bombasto" },
+    { "id": 3, "name": "Magneta" },
+    { "id": 4, "name": "Tornado" }
+  ]
+}
+
+
+You wrap the heroes array in an object with a 'data' property for the same reason
+that a data server does - to mitigate the security risk posed by top-level 
+JSON arrays.
+
+You'd set the endpoint to the JSON file like this:
+
+  private heroesUrl = 'app/heroes.json'; // URL to JSON file
+
+
+The GET heroes scenario would work, but you can't save changes to a JSON file.
+
+The in-mem web API gets its data from a custom application class with a createDb() 
+method that returns a map whose keys are collection names and whose values are
+arrays of objects in those collections.
+
+
+in-mem-data.service.ts
+-----------------------
+
+  import { Injectable } from '@angular/core';
+  import { InMemoryDbService } from 'angular-in-memory-web-api';
+
+  @Injectable()
+  export class InMemoryDataService implements InMemoryDbService{
+
+    constructor() { }
+
+    createDb() {
+      let heroes = [
+        { id: 11, name: 'Mr. Nice' },
+        { id: 12, name: 'Narco' },
+        { id: 13, name: 'Bombasto' },
+        { id: 14, name: 'Celeritas' },
+        { id: 15, name: 'Magneta' },
+        { id: 16, name: 'RubberMan' },
+        { id: 17, name: 'Dynama' },
+        { id: 18, name: 'Dr IQ' },
+        { id: 19, name: 'Magma' },
+        { id: 20, name: 'Tornado' }
+      ];
+      return {heroes};  // NOTE: curly braces!
+    }
+
+  }
+
+
+Ensure that the HeroService endpoint refers to the web API
+
+hero.service.ts
+---------------
+
+  private heroesUrl = 'api/heroes';   // URI to web api
+
+
+Finally, redirect client HTTP requests to the in-memory web API by adding the
+InMemoryWebApiModule to the AppModule.imports list, and call its forRoot() 
+configuration method:
+
+    InMemoryWebApiModule.forRoot(InMemoryDataService)
+
+How This Works
+==============
+
+Angular's http service delegates the client/server communication tasks to a 
+helper service called XHRBackend.
+
+Using standard Angular provider registration techniques, the InMemoryWebApiModule
+replaces XHRBackend service with its own in-memory alternative.
+
+The forRoot() method initializes the in-mem web API with the seed data from the 
+mock hero dataset.
+
+    NOTE: 
+    
+    1. the "forRoot" method name is a strong reminder that you should 
+    only call the InMemoryWebApiModule ONCE while setting the metadata for the 
+    root AppModule
+
+    2. Import the InMemoryWebApiModule AFTER the HttpModule to ensure that
+    the XHRBackend provider of the InMemoryWebApiModule supersedes all others.
+
+      import { HttpModule }           from '@angular/http';
+      import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+
+
+Passthru to a live XHRBackend
+-----------------------------
+
+If an existing running remote server should handle requests for collections
+that not in the in-memory database, set 
+
+  Config.passThruUknownUrl: true
+
+This service will forward unrecognized requests via a base version of the 
+Angular XHRBackend.
+
+
+
+
+================================================================================
+
   Applications Styles
   *******************
 

@@ -6,6 +6,36 @@
   @@@@@@@@@@@@
 
 
+Stream
+
+  a sequence of ongoing events ordered in time
+
+  streams emit a value (data), error and complete signal (maybe)
+
+  E.g. http.get is a stream that 
+    - should return a value (data) or an error, and 
+    - complete signal
+
+Observables
+  are used to watch these streams
+  will emit a function when a value, error or completed signal is returned
+
+  can be subscribed to by an Observer
+
+  will constantly watch streams and will update accordingly.
+
+  We can interact with these data streams via Observables as we would with an array.
+
+ReactiveX
+
+  is a library for composing asynchronous programs by using observable sequences.
+  provides a long list of operators which allows us to filter, select, transform
+  combine and compose observables.  
+
+
+
+
+
   Functional Reactive Programming FRP
   ***********************************
 
@@ -108,6 +138,40 @@ tweets_
 
 ================================================================================
 
+  angular2 Http service methods and Observables
+  *********************************************
+  
+In Angular, each Http service method returns an Observable of HTTP Response objects.
+
+For instance, HeroService converts an Observable into a Promise and returns the
+promise to the caller.
+
+  an observable is a stream of events that we can process with array-like operators.  
+
+Angular core has basic support for observables.  We augment that support with
+operators and extensions from the RxJS Observables library.
+
+Converting an Observable to a Promise is often a good choice.
+We often ask 'http.get' to fetch a single chunk of data.
+When we receive the data, we are done.
+
+A single result in the form of a promise is easy for the calling component to
+consume and it helps that promises are widely understood by the JS programmers.
+
+But requests aren't always "one and done".  We may start one request, then 
+cancel it, and make a different request before the server has responded to the
+first request...
+
+Such a 'request-cancel-new-request' sequence is difficult to implement with 
+Promises.
+
+It's easy with Observables.
+
+
+
+
+================================================================================
+
   Reactive Programming for Angular2
   *********************************
 
@@ -151,7 +215,7 @@ RxJS
 https://miguelmota.com/blog/getting-started-with-rxjs/
   
 
-is one of many ways of representing async values in JavaScript
+Observables is one of many ways of representing async values in JavaScript
 it's a lot like a Promise, but acts more like a collection of async values
 they are a first class async values like a promise is
 
