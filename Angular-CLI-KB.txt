@@ -769,3 +769,53 @@ the plugins array as well.
 
 
 ==============================================================
+
+  Angular AOT compiler
+  ********************
+
+Angular "ahead-of-time" compiler.
+https://angular.io/docs/ts/latest/cookbook/aot-compiler.html
+The Angular2 Compiler - Tobias Bosch
+https://www.youtube.com/watch?v=kW9cJsvcsGo
+
+Angular2 AOT with Webpack and Lazy Loading
+http://www.dzurico.com/angular-aot-webpack-lazy-loading/
+
+With AoT, the compiler runs once at build time using one set of libraries.
+With JiT, it runs every time for every user at runtime using a different set
+of libraries.
+
+JIT compilation, also known as dynamic translation, is compilation done 
+during execution of a program - at run time. When the user opens the browser,
+the following steps are performed:
+
+1. download the JS assets
+2. angular bootstraps
+3. angular goes thru the JiT compilation generating all the JS for each component
+   of the application
+4. the application gets rendered
+
+In AoT, we prepare everything before and we don't need anything else to dynamically
+compile the template:
+
+-faster rendering
+-fewer async requests
+-smaller angular framework download size
+-better security
+
+
+================================================================================
+
+
+  angular 2 library
+  *****************
+Issue #3580
+Using angular-cli to generate a component library for angular 2
+https://github.com/angular/angular-cli/issues/3580
+
+http://www.dzurico.com/how-to-create-an-angular-library/
+https://github.com/daniele-zurico/angular2-library
+
+
+
+================================================================================
