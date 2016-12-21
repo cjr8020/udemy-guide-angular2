@@ -717,13 +717,15 @@ Adding bootstrap:
 
 2. open src/app/app.module.ts and add:
 
-import { AlertModule } from 'ng2-bootstrap';
+import { AlertModule, AlertConfig } from 'ng2-bootstrap';
 ...
 
 @NgModule({
    ...
    imports: [AlertModule, ... ],
-    ... 
+   providers: [ 
+       AlertConfig,            // ng2-bootstrap
+   ]
 })
 
 3. open angular-cli.json and insert a new entry into the styles array
