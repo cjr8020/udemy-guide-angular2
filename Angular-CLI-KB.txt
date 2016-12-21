@@ -664,12 +664,17 @@ Finally, add the Bootstrap CSS to the apps[0].styles array:
 
 Restart 'ng serve' if you're running it, and bootstrap 4 should be working.
 
+================================================================================
 
 ng2-bootstrap
 *************
+
 contains all core (and not only) Bootstrap components powered by Angular2.
 So you don't need to include original JS components, but we are using markup
 and CSS provided by Bootstrap.
+
+
+https://ng-bootstrap.github.io/#/getting-started
 
 installation:
 
@@ -694,9 +699,25 @@ Adding bootstrap:
 
   $ npm install ng2-bootstrap bootstrap --save
 
+
+--> NOTE: ng2-bootstrap 1.1.16-9  changes:
+
+  Now, 'AlertModule' alone is not sufficient for the example below.
+  You will get 
+    "Error in ./AppComponent class AppComponent - inline template:3:4 caused by: 
+    No provider for AlertConfig!"
+
+  So, will also need to add AlertConfig as provider in
+  app.module.ts:
+
+      providers: [ 
+        AlertConfig,            // ng2-bootstrap
+      ]
+
+
 2. open src/app/app.module.ts and add:
 
-import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { AlertModule } from 'ng2-bootstrap';
 ...
 
 @NgModule({
@@ -711,6 +732,7 @@ import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css"
       ],
+
 
 4. to validate, open src/app/app.component.html and add:
 
