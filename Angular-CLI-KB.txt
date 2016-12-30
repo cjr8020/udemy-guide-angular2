@@ -869,6 +869,30 @@ https://github.com/angular/angular-cli/issues/3580
 http://www.dzurico.com/how-to-create-an-angular-library/
 https://github.com/daniele-zurico/angular2-library
 
+================================================================================
 
+  deploying with angular-cli
+  **************************
+
+ng build can specify both a build target (--target=production or --target=development) 
+and an environment file to be used with that build (--environment=dev or --environment=prod). 
+By default, the development build target and environment are used.
+
+The mapping used to determine which environment file is used 
+can be found in angular-cli.json:
+
+"environments": {
+  "source": "environments/environment.ts",
+  "dev": "environments/environment.ts",
+  "prod": "environments/environment.prod.ts"
+}
+
+These options also apply to the serve command. If you do not pass a value for environment, it will default to dev for development and prod for production.
+
+
+# these are equivalent
+ng build --target=production --environment=prod
+ng build --prod --env=prod
+ng build --prod  
 
 ================================================================================
