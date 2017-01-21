@@ -47,6 +47,14 @@ Local project package:
   $ npm install --save-dev angular-cli@latest
   $ ng init
 
+NOTE: angular-cli install on RHEL 6
+was failing on node-sass installation using /usr/bin/gcc [v 4.4.7]
+needed to use gcc v4.8.2 which was installed with devtoolset-2
+you should have the following in your .bashrc or .bash_profile
+
+  source /opt/rh/devtoolset-2/enable
+
+
 ==============================================================================  
 
 List currently installed version
@@ -819,6 +827,10 @@ browsers: [ 'PhantomJS', 'Chrome' ],
 Since you want a completely headless experience, you can remove Chrome 
 from the browsers property, and remove the karma-chrome-launcher from 
 the plugins array as well.
+
+execute tests:
+
+$ ng test --build --browsers PhantomJS --watch false --log-level debug
 
 
 ==============================================================
