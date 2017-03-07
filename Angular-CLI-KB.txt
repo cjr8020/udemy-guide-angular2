@@ -799,6 +799,32 @@ Visit http://ember-cli.com/user-guide/#watchman for more info.
   How to run tests without browser?
   *********************************
 
+It is now PhantomJS2:
+
+so changes all instances to PhantomJS2
+
+$ npm i --save-dev karma-phantomjs2-launcher
+
+karma.conf.js
+--------------
+
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', 'angular-cli'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-phantomjs2-launcher'),
+      require('karma-remap-istanbul'),
+      require('angular-cli/plugins/karma')
+    ],
+
+browsers: [ 'PhantomJS2', 'Chrome' ],
+
+$ $ ng test --build --browsers PhantomJS2 --watch false --log-level debug
+
+
 https://github.com/angular/angular-cli/issues/2013
 
 
