@@ -47,6 +47,14 @@ Local project package:
   $ npm install --save-dev angular-cli@latest
   $ ng init
 
+NOTE: angular-cli install on RHEL 6
+was failing on node-sass installation using /usr/bin/gcc [v 4.4.7]
+needed to use gcc v4.8.2 which was installed with devtoolset-2
+you should have the following in your .bashrc or .bash_profile
+
+  source /opt/rh/devtoolset-2/enable
+
+
 ==============================================================================  
 
 List currently installed version
@@ -682,12 +690,17 @@ Finally, add the Bootstrap CSS to the apps[0].styles array:
 
 Restart 'ng serve' if you're running it, and bootstrap 4 should be working.
 
+================================================================================
 
 ng2-bootstrap
 *************
+
 contains all core (and not only) Bootstrap components powered by Angular2.
 So you don't need to include original JS components, but we are using markup
 and CSS provided by Bootstrap.
+
+
+https://ng-bootstrap.github.io/#/getting-started
 
 installation:
 
@@ -712,15 +725,33 @@ Adding bootstrap:
 
   $ npm install ng2-bootstrap bootstrap --save
 
+
+--> NOTE: ng2-bootstrap 1.1.16-9  changes:
+
+  Now, 'AlertModule' alone is not sufficient for the example below.
+  You will get 
+    "Error in ./AppComponent class AppComponent - inline template:3:4 caused by: 
+    No provider for AlertConfig!"
+
+  So, will also need to add AlertConfig as provider in
+  app.module.ts:
+
+      providers: [ 
+        AlertConfig,            // ng2-bootstrap
+      ]
+
+
 2. open src/app/app.module.ts and add:
 
-import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { AlertModule, AlertConfig } from 'ng2-bootstrap';
 ...
 
 @NgModule({
    ...
    imports: [AlertModule, ... ],
-    ... 
+   providers: [ 
+       AlertConfig,            // ng2-bootstrap
+   ]
 })
 
 3. open angular-cli.json and insert a new entry into the styles array
@@ -729,6 +760,7 @@ import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css"
       ],
+
 
 4. to validate, open src/app/app.component.html and add:
 
@@ -785,6 +817,32 @@ Visit http://ember-cli.com/user-guide/#watchman for more info.
   How to run tests without browser?
   *********************************
 
+It is now PhantomJS2:
+
+so changes all instances to PhantomJS2
+
+$ npm i --save-dev karma-phantomjs2-launcher
+
+karma.conf.js
+--------------
+
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', 'angular-cli'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-phantomjs2-launcher'),
+      require('karma-remap-istanbul'),
+      require('angular-cli/plugins/karma')
+    ],
+
+browsers: [ 'PhantomJS2', 'Chrome' ],
+
+$ $ ng test --build --browsers PhantomJS2 --watch false --log-level debug
+
+
 https://github.com/angular/angular-cli/issues/2013
 
 
@@ -814,5 +872,155 @@ Since you want a completely headless experience, you can remove Chrome
 from the browsers property, and remove the karma-chrome-launcher from 
 the plugins array as well.
 
+execute tests:
+
+$ ng test --build --browsers PhantomJS --watch false --log-level debug
+
 
 ==============================================================
+
+  Angular AOT compiler
+  ********************
+
+Angular "ahead-of-time" compiler.
+https://angular.io/docs/ts/latest/cookbook/aot-compiler.html
+The Angular2 Compiler - Tobias Bosch
+https://www.youtube.com/watch?v=kW9cJsvcsGo
+
+Angular2 AOT with Webpack and Lazy Loading
+http://www.dzurico.com/angular-aot-webpack-lazy-loading/
+
+With AoT, the compiler runs once at build time using one set of libraries.
+With JiT, it runs every time for every user at runtime using a different set
+of libraries.
+
+JIT compilation, also known as dynamic translation, is compilation done 
+during execution of a program - at run time. When the user opens the browser,
+the following steps are performed:
+
+1. download the JS assets
+2. angular bootstraps
+3. angular goes thru the JiT compilation generating all the JS for each component
+   of the application
+4. the application gets rendered
+
+In AoT, we prepare everything before and we don't need anything else to dynamically
+compile the template:
+
+-faster rendering
+-fewer async requests
+-smaller angular framework download size
+-better security
+
+
+================================================================================
+
+
+  angular 2 library
+  *****************
+Issue #3580
+Using angular-cli to generate a component library for angular 2
+https://github.com/angular/angular-cli/issues/3580
+
+http://www.dzurico.com/how-to-create-an-angular-library/
+https://github.com/daniele-zurico/angular2-library
+
+================================================================================
+
+  deploying with angular-cli
+  **************************
+
+ng build can specify both a build target (--target=production or --target=development) 
+and an environment file to be used with that build (--environment=dev or --environment=prod). 
+By default, the development build target and environment are used.
+
+The mapping used to determine which environment file is used 
+can be found in angular-cli.json:
+
+"environments": {
+  "source": "environments/environment.ts",
+  "dev": "environments/environment.ts",
+  "prod": "environments/environment.prod.ts"
+}
+
+These options also apply to the serve command. If you do not pass a value for environment, it will default to dev for development and prod for production.
+
+
+# these are equivalent
+ng build --target=production --environment=prod
+ng build --prod --env=prod
+ng build --prod  
+
+================================================================================
+
+
+## Deploying to Apache
+   *******************
+
+Suppose, you're about to deploy this app to an apache 2.2 instance to an 
+Alias'ed path:
+
+```
+Alias /ng/ "/apps/angular-apps/"
+<Directory /apps/angular-apps>
+  Order allow,deny
+  Allow from all
+  AllowOverride All
+</Directory>
+```
+Angular2 Router supports two techniques for managing browser's location and history:
+
+1. PathLocationStrategy - the default "HTML 5 pushState" style
+2. HashLocationStrategy - the "hash URL" style (for real old browsers)
+
+To make `PathLocationStrategy` work on Apache, you will need to create an
+`.htaccess` file in the same location as your index.HTML
+
+Taking into consideration the above httpd.conf snippet, here's the `.htaccess` 
+file content:
+
+```
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /ng/tour-of-heroes/
+  RewriteRule ^index\.html$ - [L]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # do not rewrite css, js and images
+  RewriteCond %{REQUEST_URI} !\.(?:css|js|map|jpe?g|gif|png)$ [NC]
+
+  RewriteRule . /ng/tour-of-heroes/index.html [L]
+</IfModule>
+```
+
+Finally, generate the `prod` distribution for this application to be deployed
+on the apache server using the following command:
+
+```
+$ ng build --prod --base-href /ng/tour-of-heroes/
+```
+This will ensure that the generated `index.html` file has `base href` that 
+matches our target server configuration:
+
+```
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ng2TourOfHeros</title>
+  <base href="/ng/tour-of-heroes/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="styles.622c1e2152786c612d9feac19a219d0e.bundle.css" rel="stylesheet"></head>
+<body>
+  <app-root>Loading...</app-root>
+<script type="text/javascript" src="inline.d41d8cd98f00b204e980.bundle.js"></script>
+<script type="text/javascript" src="styles.b2328beb0372c051d06d.bundle.js"></script>
+<script type="text/javascript" src="main.19929f08046e175b7224.bundle.js"></script>
+</body>
+</html>
+```
+================================================================================

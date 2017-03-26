@@ -246,6 +246,28 @@ Routing
    - multiple directives (RouterOutlet, RouterLink, RouterLinkActive)
    - configuration (Routes)
 
+  When the router navigates to a new component view, it updates the browser's 
+  location and history with a URL for that view.  This is a strictly local URL.
+  The browser should not send this URL to the server and should NOT reload the
+  page.
+
+  The Angular Router supports two techniques for achieving that with the help
+  of two LocationStrategy providers:
+
+  1. PathLocationStrategy - the default "HTML 5 pushState" style
+  2. HashLocationStrategy - the "hash URL" style
+
+  The first one relies on the modern HTML 5 browsers' support for history.pushState
+  technique.
+
+  Older browsers send page requests to the server when the location URL changes.. 
+  unless the change occurs after a "#" hash.  Routers take advantage of this
+  exception by composing in-application route URLs with hashes. e.g.:
+
+    localhost:3002/src/#/crisis-center/
+
+
+
    <head>
     <base href="/">
 
