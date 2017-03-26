@@ -231,12 +231,30 @@ To generate a new component with flat structure, inline styles and template
 
 =====================================================================
 
-  creating a new service
-  **********************
+  create service
+  **************
+
+note: make sure NOT to include "servide" into <service-name> - it will be added.
 
   $ ng g s <service-name> --flat --spec 
 
     --flat (default: true)
+
+  examples:
+
+  1. 
+  
+    src/app $ ng g s in-memory-data --flat
+
+      creates the service in src/app/ folder
+
+  2. create service in shared folder:
+
+    $ mkdir src/app/shared
+    $ ng g s shared/config
+
+      creates config.service.ts in src/app/shared/ folder
+
 
 
 create config service
