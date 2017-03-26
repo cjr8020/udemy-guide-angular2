@@ -11,7 +11,14 @@ Update nodejs on ubuntu:
 $ sudo npm cache clean -f
 $ sudo npm install -g n
 $ sudo n stable
+
+# note the link below may not be need - n manages /usr/local/bin/node instead
 $ sudo ln -sf /usr/local/n/versions/node/<VERSION>/bin/node /usr/bin/node
+
+To switch node versions:
+
+$ n               # to display installed versions
+$ sudo n 7.6.0    # to switch to that version
 
 
 Updating typescript
